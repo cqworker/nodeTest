@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="meiqia@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.2">
+    <root id="1"/>
+    <schema id="2" parent="1" name="meiqia">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="aqacd5vvkc5caqaad0mi1tge8bqmawaa"/>
+    <schema id="4" parent="1" name="comcq"/>
+    <schema id="5" parent="1" name="comcq2"/>
+    <schema id="6" parent="1" name="information_schema"/>
+    <schema id="7" parent="1" name="i_wenyiba_com"/>
+    <schema id="8" parent="1" name="meiqiacms"/>
+    <schema id="9" parent="1" name="mysql"/>
+    <schema id="10" parent="1" name="performance_schema"/>
+    <schema id="11" parent="1" name="shiro"/>
+    <schema id="12" parent="1" name="test"/>
+    <table id="13" parent="2" name="dictionary"/>
+    <table id="14" parent="2" name="meta"/>
+    <table id="15" parent="2" name="permission"/>
+    <table id="16" parent="2" name="permission_role"/>
+    <table id="17" parent="2" name="role"/>
+    <table id="18" parent="2" name="token"/>
+    <table id="19" parent="2" name="user"/>
+    <table id="20" parent="2" name="user_role"/>
+    <column id="21" parent="13" name="id">
+      <Position>1</Position>
+      <DataType>char(32)|0</DataType>
+    </column>
+    <column id="22" parent="13" name="dic_key">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="23" parent="13" name="type">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="24" parent="13" name="dic_value">
+      <Position>4</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="25" parent="14" name="id">
+      <Position>1</Position>
+      <DataType>char(32)|0</DataType>
+    </column>
+    <column id="26" parent="14" name="name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="27" parent="14" name="displayName">
+      <Position>3</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="28" parent="15" name="id">
+      <Position>1</Position>
+      <DataType>char(32)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="29" parent="15" name="permission">
+      <Position>2</Position>
+      <DataType>varchar(225)|0</DataType>
+    </column>
+    <key id="30" parent="15" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="31" parent="16" name="id">
+      <Position>1</Position>
+      <DataType>char(32)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="32" parent="16" name="permissionId">
+      <Position>2</Position>
+      <DataType>char(32)|0</DataType>
+    </column>
+    <column id="33" parent="16" name="roleId">
+      <Position>3</Position>
+      <DataType>char(32)|0</DataType>
+    </column>
+    <index id="34" parent="16" name="permission_role_permission_id_fk">
+      <ColNames>permissionId</ColNames>
+    </index>
+    <index id="35" parent="16" name="permission_role_role_id_fk">
+      <ColNames>roleId</ColNames>
+    </index>
+    <key id="36" parent="16" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="37" parent="16" name="permission_role_permission_id_fk">
+      <ColNames>permissionId</ColNames>
+      <RefSchemaName>meiqia</RefSchemaName>
+      <RefTableName>permission</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="38" parent="16" name="permission_role_role_id_fk">
+      <ColNames>roleId</ColNames>
+      <RefSchemaName>meiqia</RefSchemaName>
+      <RefTableName>role</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="39" parent="17" name="id">
+      <Position>1</Position>
+      <DataType>char(32)|0</DataType>
+    </column>
+    <column id="40" parent="17" name="role">
+      <Position>2</Position>
+      <DataType>varchar(225)|0</DataType>
+    </column>
+    <column id="41" parent="17" name="new_column">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <index id="42" parent="17" name="role_id_pk">
+      <ColNames>id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="43" parent="17" name="role_id_pk">
+      <ColNames>id</ColNames>
+      <UnderlyingIndexName>role_id_pk</UnderlyingIndexName>
+    </key>
+    <column id="44" parent="18" name="id">
+      <Position>1</Position>
+      <DataType>char(32)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="45" parent="18" name="token">
+      <Position>2</Position>
+      <DataType>varchar(225)|0</DataType>
+    </column>
+    <column id="46" parent="18" name="ip">
+      <Position>3</Position>
+      <DataType>varchar(225)|0</DataType>
+    </column>
+    <column id="47" parent="18" name="userId">
+      <Position>4</Position>
+      <DataType>char(32)|0</DataType>
+    </column>
+    <index id="48" parent="18" name="token_user_id_fk">
+      <ColNames>userId</ColNames>
+    </index>
+    <key id="49" parent="18" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="50" parent="18" name="token_user_id_fk">
+      <ColNames>userId</ColNames>
+      <RefSchemaName>meiqia</RefSchemaName>
+      <RefTableName>user</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="51" parent="19" name="id">
+      <Position>1</Position>
+      <DataType>char(32)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="52" parent="19" name="name">
+      <Position>2</Position>
+      <DataType>varchar(225)|0</DataType>
+    </column>
+    <column id="53" parent="19" name="password">
+      <Position>3</Position>
+      <DataType>varchar(225)|0</DataType>
+    </column>
+    <column id="54" parent="19" name="salt">
+      <Position>4</Position>
+      <DataType>varchar(225)|0</DataType>
+    </column>
+    <column id="55" parent="19" name="lastLoginTime">
+      <Position>5</Position>
+      <DataType>date|0</DataType>
+    </column>
+    <column id="56" parent="19" name="enable">
+      <Position>6</Position>
+      <DataType>int(11)|0</DataType>
+      <DefaultExpression>&apos;0&apos;</DefaultExpression>
+    </column>
+    <key id="57" parent="19" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="58" parent="20" name="id">
+      <Position>1</Position>
+      <DataType>char(32)|0</DataType>
+      <NotNull>1</NotNull>
+      <DefaultExpression>&apos;&apos;</DefaultExpression>
+    </column>
+    <column id="59" parent="20" name="userId">
+      <Position>2</Position>
+      <DataType>char(32)|0</DataType>
+    </column>
+    <column id="60" parent="20" name="roleId">
+      <Position>3</Position>
+      <DataType>char(32)|0</DataType>
+    </column>
+    <index id="61" parent="20" name="user_role_role_id_fk">
+      <ColNames>roleId</ColNames>
+    </index>
+    <index id="62" parent="20" name="user_role_user_id_fk">
+      <ColNames>userId</ColNames>
+    </index>
+    <key id="63" parent="20" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="64" parent="20" name="user_role_user_id_fk">
+      <ColNames>userId</ColNames>
+      <RefSchemaName>meiqia</RefSchemaName>
+      <RefTableName>user</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <foreign-key id="65" parent="20" name="user_role_role_id_fk">
+      <ColNames>roleId</ColNames>
+      <RefSchemaName>meiqia</RefSchemaName>
+      <RefTableName>role</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+  </database-model>
+</dataSource>
