@@ -28,6 +28,8 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
 var order = require('./routes/order');
+var meta = require('./routes/meta');
+var seeDetail = require('./routes/seeDetail');
 
 //请求都会被app这个函数处理（因为这个app是执行express后的结果)
 //在express内部，有一个函数的数组，暂时叫这个数组tasks，每来一个请求express内部会依次执行这个数组中的函数
@@ -56,6 +58,8 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/login', login);
 app.use('/order', order);
+app.use('/meta', meta);
+app.use('/seeDetail', seeDetail);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
