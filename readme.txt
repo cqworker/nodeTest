@@ -5,3 +5,12 @@
  routes：路由文件
  app.js，程序启动文件
  package.json：项目依赖配置及开发者信息
+
+
+
+ jade 模板语言:
+-var data = {"1":"1","2":"2"}
+p #{data}
+ul
+each val, index in data
+    li= index + ': ' + val

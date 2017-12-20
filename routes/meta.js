@@ -27,7 +27,6 @@ router.get('/get', function (req, res, next) {
 
         res2.on("end", function () {
             var body = Buffer.concat(chunks);
-            console.log(body.toString());
             res.render('meta', JSON.parse(body.toString()));
         });
     });

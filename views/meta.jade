@@ -1,16 +1,20 @@
+//jade
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        title MetaDetail
+        style
+            include ../public/stylesheets/style.css
+        script
+            include ../public/javascripts/index.js
+    body
+        ul
+        each val, index in body
+            li= index + '  :  ' + val.display_name
+            a(href='/see/'+index) SeeDetail
 
-//-var类似于 <%= =%>
-//遍历的时候需要把#去掉
-ul
-each val, index in body
-    li= index + '  :  ' + val.display_name
-    a(href='/see') SeeDetail
 
--var data = {"1":"1","2":"2"}
-p #{data}
-ul
-each val, index in data
-    li= index + ': ' + val
 
 
 
