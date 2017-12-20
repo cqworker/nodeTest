@@ -6,12 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 //mysql中间件
-// var mysql = require('mysql');
-// //配置模块
-// var settings = require('./settings');
-// //连接数据库
-// var connection = mysql.createConnection(settings.db);
-// connection.connect();
 var mysql = require('mysql'),
     myConnection = require('express-myconnection'),
     dbOptions = {
@@ -31,9 +25,10 @@ var order = require('./routes/order');
 var meta = require('./routes/meta');
 var seeDetail = require('./routes/seeDetail');
 var schema = require('./routes/schema');
+var tenement = require('./routes/tenement');
 
 
-//请求都会被app这个函数处理（因为这个app是执行express后的结果)
+//app注册
 //在express内部，有一个函数的数组，暂时叫这个数组tasks，每来一个请求express内部会依次执行这个数组中的函数
 //function(req,res，next){//...}
 var app = express();
@@ -54,6 +49,7 @@ app.use(myConnection(mysql, dbOptions, 'single'));
 //静态文件
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 //路由
 // 2.url对应模板 类似于servletMapping
 app.use('/', index);
@@ -63,6 +59,7 @@ app.use('/order', order);
 app.use('/meta', meta);
 app.use('/see', seeDetail);
 app.use('/schema', schema);
+app.use('/tenement', tenement);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -79,13 +76,9 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  // 调用模板
+  // 渲染响应
   res.render('error');
 });
-
-
-
-
 
 
 //抛出  --交给www

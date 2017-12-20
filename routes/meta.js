@@ -5,15 +5,18 @@ var http = require("http");
 
 // 第一个参数和app.js中的路由拼接为完成url
 router.get('/get', function (req, res, next) {
-    console.log("get")
-//
+    //获取cookies
+    var rip = req.cookies.ip;
+    var rtoken = req.cookies.xToken;
+    var rtenement = req.cookies.tenement;
+
     var options = {
         "method": "GET",
-        "hostname": "10.100.250.133",
+        "hostname": rip,
         "port": "7010",
-        "path": "/api/v1.0/GuoXinLianCheng/all-metas?acl=true",
+        "path": "/api/v1.0/" + rtenement + "/all-metas?acl=true",
         "headers": {
-            "x-token": "AQsCAH4ZylkAAEFRQUNkNVZWa2M3UkNBQUFQU0xlNHhRYzVCUWVDQUFBQVFBQ2Q1VlZrYzdSQ0FBQUFNWE80eFFjNUJRZENBQUHpdByJItptku7_xrJZvPRPvw8ETwX8c74DTTHaq5ClR2ouJbEKqLDInLz-P_KmENSsJMTtcrOe0pjlIlTItpid",
+            "x-token": rtoken,
             "cache-control": "no-cache",
             "postman-token": "6102c801-da94-8ab7-e4f9-ca888864b3d4"
         }
