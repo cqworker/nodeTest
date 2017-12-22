@@ -9,14 +9,16 @@ html
         script
             include ../public/javascripts/index.js
     body
+        h2 标准对象集
         ul
         each val, index in body
-            li= index + '  :  ' + val.display_name
-            a(href='/see/'+index) SeeDetail
-            br
-            a(href='/trigger/'+index) SeeTrigger
-            br
-            a(href='/validation/'+index) SeeValidation
+            li=  '字段名: ' + val.display_name
+            li=  '数据库存储字段名: ' + index
+            a(href='/see/' + index) SeeDetail--|
+
+            a(href='/trigger/' + index) --SeeTrigger--|
+            a--
+            a(href='/validation/' + index) --SeeValidation
 
 
 

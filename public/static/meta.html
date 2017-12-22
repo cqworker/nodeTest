@@ -6,8 +6,9 @@
 </head>
 <body>
 display_name:<input type="text" name="meta_display_name" id="dis"><br/>
-dataBase_name:<input type="text" id="meta"><span style="display: none">√</span><span style="display: none">×</span>
+dataBase_name:<input type="text" id="meta"><span style="display: none" id="success">√</span><span style="display: none" id="defeat">×</span>
 <button id="checkMeta">checkMeta</button>
+<button id="createObj">createMeta</button>
 <br/>
 ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
 <div id="myDiv">
@@ -71,8 +72,8 @@ ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
                 $('#mHead').html(strh);
                 $('#mBody').html('');
                 $('#mBody').html(strb);
-                console.log(strh)
-                console.log(strb)
+               // console.log(strh)
+               // console.log(strb)
             };
             var s = reader.readAsText(file);
 
@@ -87,6 +88,7 @@ ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
             //序列化失败
             var meta = $('#meta').val();
             var json = "{\"" + meta + "\":[";
+            var tempGroup = "";
             for (var i = 0; i < len; i++) {//form块
                 var name = document.getElementsByName('name')[i].value;
                 var display_name = document.getElementsByName('display_name')[i].value;
@@ -104,6 +106,9 @@ ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
                 var start_number = document.getElementsByName('start_number')[i].value;
                 var default_value = document.getElementsByName('default_value')[i].value;
                 var group = document.getElementsByName('group')[i].value;
+                if(group){
+                    tempGroup = group;
+                }
                 //[{},{}]
                 json += "{\"name\":\"" + name + "\",";
                 json += "\"display_name\":\"" + display_name + "\",";
@@ -143,15 +148,16 @@ ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
                 if (format) {
                     json += "\"format\":\"" + format + "\",";
                 }
-
-                json += "\"default_value\":\"" + default_value + "\",";
+                if (default_value) {
+                    json += "\"default\":{\"value\":\"" + default_value + "\",\"dynamic\":false,\"valid\":true},";
+                }
                 if (i === len - 1) {
-                    json += "\"group\":\"" + group + "\"}]}";
+                    json += "\"group\":\"" + tempGroup + "\"}]}";
                 } else {
-                    json += "\"group\":\"" + group + "\"},";
+                    json += "\"group\":\"" + tempGroup + "\"},";
                 }
             }
-            console.log(json)
+           // console.log(json)
             $.ajax({
                 url: '/meta/create',
                 type: 'post',
@@ -163,17 +169,35 @@ ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
             })
         });
 
-        $('#checkMeta').on("click",function () {
-            var display_name =$('#dis').val();
+        $('#createObj').on("click", function () {
+            var display_name = $('#dis').val();
             var metaName = $('#meta').val();
             $.ajax({
-                url:'/meta/create/'+display_name+"/"+metaName,
-                dataType:'json',
-                type:'get',
-                success:function (data) {
-                    alert("success!");
+                url: '/meta/create/' + display_name + "/" + metaName,
+                dataType: 'json',
+                type: 'get',
+                success: function (data) {
+                    alert('success!!')
                 }
 
+            })
+        });
+
+        $('#checkMeta').on('click',function () {
+            var metaName = $('#meta').val();
+            $.ajax({
+                url: '/meta/'+metaName,
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        $('#defeat').css('display','none');
+                        $('#success').css('display','block');
+                    }else{
+                        $('#success').css('display','none');
+                        $('#defeat').css('display','block');
+                    }
+                }
             })
         })
 

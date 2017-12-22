@@ -55,6 +55,7 @@ router.post('/create', function (req, res, next) {
     //eval 的用法
     // console.log(eval('metaJson.'+metaName));
     var metaArr = metaJson[metaName];
+    //console.log(metaArr);
 
     var count = 0;
 
@@ -65,11 +66,11 @@ router.post('/create', function (req, res, next) {
 
     for (var i = 0; i < metaArr.length; i++) {
 
-         var options = {
+        var options = {
             "method": "PUT",
             "hostname": rip,
-            "port": "7010",
-            "path": "/api/v2.0/" + rtenement + "/" + metaName + "/meta/add",
+            "port": "7020",
+            "path": "/api/v1.0/" + rtenement + "/" + metaName + "/meta/add",
             "headers": {
                 "x-token": rtoken,
                 "content-type": "application/json",
@@ -77,7 +78,7 @@ router.post('/create', function (req, res, next) {
                 "postman-token": "0a661c6d-638b-19e2-70e5-37ddd87d9768"
             }
         };
-         var req2 = http.request(options, function (res2) {
+        var req2 = http.request(options, function (res2) {
             var chunks = [];
 
             res2.on("data", function (chunk) {
@@ -85,15 +86,16 @@ router.post('/create', function (req, res, next) {
             });
 
             res2.on("end", function () {
-                // var body = Buffer.concat(chunks);
+                var body = Buffer.concat(chunks);
                 count++;
-                // console.log(body.toString());
             });
         });
         req2.write(JSON.stringify(metaArr[i]));
         req2.end();
     }
-    console.log("成功个数: " + count);
+    //count 无法实现统计
+    //console.log("成功个数: " + count);
+
 });
 /**
  * 创建自定义对象
@@ -101,7 +103,7 @@ router.post('/create', function (req, res, next) {
 //接收get请求
 router.get('/create/:display_name/:metaName', function (req, res, next) {
     var metaName = req.params.metaName;
-    var display_name =req.params.display_name;
+    var display_name = req.params.display_name;
     //获取cookies
     var rip = req.cookies.ip;
     var rtoken = req.cookies.xToken;
@@ -135,5 +137,59 @@ router.get('/create/:display_name/:metaName', function (req, res, next) {
     req2.end();
 
 });
+/**
+ * 判断是否已经存在
+ */
+router.get('/:metaName', function (req, res, next) {
+    var metaName = req.params.metaName;
+    var result = false;
+    //获取cookies
+    var rip = req.cookies.ip;
+    var rtoken = req.cookies.xToken;
+    var rtenement = req.cookies.tenement;
+
+    var options = {
+        "method": "GET",
+        "hostname": rip,
+        "port": "7010",
+        "path": "/api/v1.0/" + rtenement + "/all-metas?acl=false",
+        "headers": {
+            "x-token": rtoken,
+            "cache-control": "no-cache",
+            "postman-token": "6102c801-da94-8ab7-e4f9-ca888864b3d4"
+        }
+    };
+    var req2 = http.request(options, function (res2) {
+        var chunks = [];
+
+        res2.on("data", function (chunk) {
+            chunks.push(chunk);
+        });
+
+        res2.on("end", function () {
+            var body = Buffer.concat(chunks);
+            var metaList = JSON.parse(body.toString());
+            var data = Object.keys(metaList.body);
+            console.log(data.length);
+            for (var i = 0; i < data.length; i++) {
+                if (metaName === data[i]) {
+                    result = true;
+                    break;
+                }
+            }
+            if (result) {
+                res.json({success: false});
+            } else {
+                res.json({success: true});
+            }
+
+
+        });
+    });
+    req2.end();
+    //
+
+});
+
 
 module.exports = router;

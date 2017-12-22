@@ -11,46 +11,57 @@ html
             include  ../public/javascripts/jquery-3.2.1.min.js
     body
         include ../public/static/meta.txt
-        //include:markdown ../public/static/meta.md
-        //- Transformers.markdown is deprecated, you must replace the :markdown jade filter, with :markdown-it and install jstransformer-markdown-it before you update to jade@2.0.0.
-        //
-            注释
-            多行注释
+        :markdown-it
+            ### 本页面支持markdown
+//
+  注释
+  多行注释
 
-        h2 #{body.display_name} 字段集!
+h2      #{body.display_name} 字段集!
 
-        ul
-        each val, index in body.schema
-            li= index + '  :  ' + val.display_name
-                p= '字段类型:'+val.type
-                if val.options
-                    p= '可选值:'
-                        select
-                            for val2,index2 in  val.options.list.all.options_value
-                                option #{val.options.list.all.options_value[index2]}
-                if val.object_name
-                    p 关联对象名: #{val.object_name}
-                if val.delete_option
-                    p 级联关系: #{val.delete_option}
-                if val.default_value
-                    p 默认值: #{val.default_value.value}
+ul
+each val, index in body.schema
+    li= '字段名: '
+        a= val.display_name
+    li= '数据库字段名: '
+        a= index
+    li= '字段类型: '
+        a= val.type
+    if val.options
+        li= '可选值:'
+            select
+                for val2,index2 in  val.options.list.all.options_value
+                    option #{val.options.list.all.options_value[index2]}
+    if val.object_name
+        li= '关联对象名: '
+            a #{val.object_name}
+    if val.delete_option
+        li 级联关系:
+            a= val.delete_option
+    if val.default_value
+        li= '默认值: '
+            a #{val.default_value.value}
+    br
+    a(href='/schema/edit/' + index )
+        = '   Edit   -|'
+    a(href='/schema/delete/' + index )
+        = '-  Delete   '
+    br
+    a(style='color:black') ------------------------------------------
+if body.dependency_by.reverse_lookup
+    h2 表的关联关系
+    ul
+    each val, index in body.dependency_by.reverse_lookup
+        li= '关联表:'
+            a= index
+        li= '关联字段: '
+            a= val.column_names
+        //a(href='/edit/' + index ) Edit
+        a(style='color:red') ------------------------------------------
 
-            a(href='/schema/edit/'+ index )
-                | Edit   |
-            a(href='/schema/delete/'+ index )
-                |   Delete
-            br
-            a --------------------------------
-        if body.dependency_by.reverse_lookup
-            ul
-            each val, index in body.dependency_by.reverse_lookup
-                li= index + '  :  ' + val.column_names
-                a(href='/edit/' + index ) Edit
-
-        p <strong>对象权限</strong>
-        a creatable<escaped> #{body.creatable}
-        a readable<escaped> #{body.readable}
-        a updatable<escaped> #{body.updatable}
-        a deletable<escaped> #{body.deletable}
-
+h2 对象权限
+li creatable<escaped> #{body.creatable}
+li readable<escaped> #{body.readable}
+li updatable<escaped> #{body.updatable}
+li deletable<escaped> #{body.deletable}
 
