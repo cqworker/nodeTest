@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tenement</title>
+</head>
+<body>
+display_name:<input type="text" name="meta_display_name" id="dis"><br/>
+dataBase_name:<input type="text" id="meta"><span style="display: none">√</span><span style="display: none">×</span>
+<button id="checkMeta">checkMeta</button>
+<br/>
+ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
+<div id="myDiv">
+    <table>
+        <thead id="mHead"></thead>
+
+        <tbody id="mBody"></tbody>
+    </table>
+
+</div>
+
+<div>
+
+
+</div>
+</body>
+<script type="text/javascript" src="../javascripts/jquery-3.2.1.min.js"></script>
+<script>
+    //js 读取文件
+    function jsReadFiles(files) {
+        if (files.length) {
+            var file = files[0];
+            var reader = new FileReader();//new一个FileReader实例
+            reader.onload = function () {
+                meta = this.result;
+                $('#dataBase_name').html(file.name.split('.')[0]);
+                //console.log(meta);
+                //, \n
+                //meta.replace(/"/g,"");
+                var strh = "";
+                var strb = "";
+                var trs = meta.split("\n", 100);
+                for (var i = 0; i < trs.length; i++) {
+
+                    var tr = trs[i];
+                    var tds = tr.split(",", 25);
+                    if (i == 0) {
+                        strh += "<tr>";
+                        for (var j = 0; j < tds.length; j++) {
+                            strh += "<th>";
+                            strh += tds[j];
+                            strh += "</th>"
+                        }
+                        strh += "<tr>";
+                    } else if (i == trs.length - 1) {
+                        strb += '<button id="create">创建</button>';
+                    } else {
+                        strb += "<form name='mForms'>";
+                        strb += "<tr>";
+                        for (var j = 0; j < tds.length; j++) {
+                            // -                           trs[0][j]会把单词拆解
+                            //alert(trs[0].split(",")[j])
+                            strb += "<td><input type='text' name=" + trs[0].split(",")[j] + " value=" + tds[j] + ">";
+                            strb += "</td>"
+                        }
+                        strb += "</tr>";
+                        strb += "</form>";
+                    }
+                }
+                $('#mHead').html('');
+                $('#mHead').html(strh);
+                $('#mBody').html('');
+                $('#mBody').html(strb);
+                console.log(strh)
+                console.log(strb)
+            };
+            var s = reader.readAsText(file);
+
+
+        }
+    }
+
+    $(function () {
+        $(document).on('click', '#create', function () {
+            var len = $(document.getElementsByName('mForms')).length;
+            //alert($(arr[0]).serializeArray().length);
+            //序列化失败
+            var meta = $('#meta').val();
+            var json = "{\"" + meta + "\":[";
+            for (var i = 0; i < len; i++) {//form块
+                var name = document.getElementsByName('name')[i].value;
+                var display_name = document.getElementsByName('display_name')[i].value;
+                var type = document.getElementsByName('type')[i].value;
+                var options = document.getElementsByName('options')[i].value;
+                var object_name = document.getElementsByName('object_name')[i].value;
+                var delete_option = document.getElementsByName('delete_option')[i].value;
+                var nullable = document.getElementsByName('nullable')[i].value;
+                var index = document.getElementsByName('index')[i].value;
+                var unique = document.getElementsByName('unique')[i].value;
+                var searchable = document.getElementsByName('searchable')[i].value;
+                var related_type = document.getElementsByName('related_type')[i].value;
+                var expression = document.getElementsByName('expression')[i].value;
+                var format = document.getElementsByName('format')[i].value;
+                var start_number = document.getElementsByName('start_number')[i].value;
+                var default_value = document.getElementsByName('default_value')[i].value;
+                var group = document.getElementsByName('group')[i].value;
+                //[{},{}]
+                json += "{\"name\":\"" + name + "\",";
+                json += "\"display_name\":\"" + display_name + "\",";
+                json += "\"type\":\"" + type + "\",";
+                if (options) {
+//                    "options": {"related":"","list":{"all":{"options_value":["a","b","c","d"]}}}
+                    var arr2 = options.split(";");
+                    var option = "[";
+                    for (var j = 0; j < arr2.length; j++) {
+                        if (j == arr2.length - 1) {
+                            option += "\"" + arr2[j] + "\"]}}}";
+                        } else {
+                            option += "\"" + arr2[j] + "\",";
+                        }
+                    }
+                    json += "\"options\":{\"related\":\"\",\"list\":{\"all\":{\"options_value\":" + option + ",";
+                }
+                if (object_name) {
+                    json += "\"object_name\":\"" + object_name + "\",";
+                }
+                if (delete_option) {
+                    json += "\"delete_option\":\"" + delete_option + "\",";
+                }
+                json += (nullable) ? "\"nullable\":true," : "\"nullable\":false,";
+                json += (nullable) ? "\"index\":true," : "\"index\":false,";
+                json += (nullable) ? "\"unique\":true," : "\"unique\":false,";
+                json += (nullable) ? "\"searchable\":true," : "\"searchable\":false,";
+                if (related_type) {
+                    json += "\"related_type\":\"" + related_type + "\",";
+                }
+                if (expression) {
+                    json += "\"expression\":\"" + expression + "\",";
+                }
+                if (start_number) {
+                    json += "\"related_type\":\"" + start_number + "\",";
+                }
+                if (format) {
+                    json += "\"format\":\"" + format + "\",";
+                }
+
+                json += "\"default_value\":\"" + default_value + "\",";
+                if (i === len - 1) {
+                    json += "\"group\":\"" + group + "\"}]}";
+                } else {
+                    json += "\"group\":\"" + group + "\"},";
+                }
+            }
+            console.log(json)
+            $.ajax({
+                url: '/meta/create',
+                type: 'post',
+                data: json,
+                datType: 'json',
+                success: function (data) {
+                    alert(data);
+                }
+            })
+        });
+
+        $('#checkMeta').on("click",function () {
+            var display_name =$('#dis').val();
+            var metaName = $('#meta').val();
+            $.ajax({
+                url:'/meta/create/'+display_name+"/"+metaName,
+                dataType:'json',
+                type:'get',
+                success:function (data) {
+                    alert("success!");
+                }
+
+            })
+        })
+
+    })
+
+
+</script>
+
+</html>

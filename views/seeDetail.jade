@@ -22,8 +22,25 @@ html
         ul
         each val, index in body.schema
             li= index + '  :  ' + val.display_name
-            a(href='/schema/edit/'+ index ) Edit
-            a(href='/schema/delete/'+ index ) Delete
+                p= '字段类型:'+val.type
+                if val.options
+                    p= '可选值:'
+                        select
+                            for val2,index2 in  val.options.list.all.options_value
+                                option #{val.options.list.all.options_value[index2]}
+                if val.object_name
+                    p 关联对象名: #{val.object_name}
+                if val.delete_option
+                    p 级联关系: #{val.delete_option}
+                if val.default_value
+                    p 默认值: #{val.default_value.value}
+
+            a(href='/schema/edit/'+ index )
+                | Edit   |
+            a(href='/schema/delete/'+ index )
+                |   Delete
+            br
+            a --------------------------------
         if body.dependency_by.reverse_lookup
             ul
             each val, index in body.dependency_by.reverse_lookup

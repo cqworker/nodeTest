@@ -1,0 +1,55 @@
+//jade
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        title Approve
+        style
+            include ../public/stylesheets/style.css
+        script
+            include ../public/javascripts/index.js
+    body
+        //图片处理或触发一次访问
+        img(src="/images/foo.png")
+        if body
+            ul
+            each val, index in body
+                //li= val.CreateUid
+                //li= val.Id
+                //li= val.UseStatus
+                //li= val.UpdateUid
+                li= val.Name
+                p.shijian
+                    a= '创建时间: '
+                    a= new Date(val.CreateTime*1000).toLocaleString()
+                    br
+                    a= '修改时间: '
+                    a= new Date(val.UpdateTime*1000).toLocaleString()
+                p.jiedian
+                    a= '审批节点: '
+                    br
+                    each val1,index1 in val.Points
+                        a=  val1.Name
+                        br
+                        a=  '审批策略: '+val1.VotePolicy
+                        br
+                        if index1!= (val.Points.length-1)
+                            a='↓'
+                            br
+                        //li=  val1.id
+                        //li=  val1.PointMembers.MemberType
+                        //li=  val1.SelectUsers
+                    br
+                    a=  '审批前执行脚本'
+                    textarea=  val.StartScript
+                    br
+                    a=  '审批后执行脚本'
+                    textarea= val.Script
+
+        else
+            ul
+                li= '该对象无trigger'
+
+
+
+

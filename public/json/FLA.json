@@ -1,0 +1,349 @@
+{
+  "aa": [
+    {
+      "name": "name",
+      "display_name": "合同名称",
+      "type": "text",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": "基本信息"
+    },
+    {
+      "name": "contract_num",
+      "display_name": "合同编号",
+      "type": "text",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_qssj",
+      "display_name": "合同起始时间",
+      "type": "date",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_jzsj",
+      "display_name": "合同截止时间",
+      "type": "date",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "status",
+      "display_name": "合同状态",
+      "type": "picklist",
+      "options": {
+        "related": "",
+        "list": {
+          "all": {
+            "options_value": [
+              "未生效",
+              "审批中",
+              "已生效",
+              "已过期"
+            ]
+          }
+        }
+      },
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "未生效",
+      "group": ""
+    },
+    {
+      "name": "contract_glsyqy",
+      "display_name": "关联上游企业",
+      "type": "lookup",
+      "object_name": "Enterprise",
+      "delete_option": "NoAction",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": "企业信息"
+    },
+    {
+      "name": "contract_glsyqyzh",
+      "display_name": "关联上游企业账户",
+      "type": "lookup",
+      "object_name": "EnterpriseAccount",
+      "delete_option": "NoAction",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_glxyqy",
+      "display_name": "关联下游企业",
+      "type": "lookup",
+      "object_name": "Enterprise",
+      "delete_option": "NoAction",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_glxyqyzh",
+      "display_name": "关联下游企业账户",
+      "type": "lookup",
+      "object_name": "EnterpriseAccount",
+      "delete_option": "NoAction",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_spmlmc",
+      "display_name": "商品目录名称",
+      "type": "picklist",
+      "options": {
+        "related": "",
+        "list": {
+          "all": {
+            "options_value": [
+              "动力煤",
+              "炼焦煤",
+              "喷吹煤",
+              "无烟煤"
+            ]
+          }
+        }
+      },
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": "商品信息"
+    },
+    {
+      "name": "contract_spmc",
+      "display_name": "商品名称",
+      "type": "text",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_spjg",
+      "display_name": "商品价格",
+      "type": "currency",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_jiaoyisl",
+      "display_name": "交易数量",
+      "type": "double",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_jiaoyije",
+      "display_name": "交易金额",
+      "type": "currency",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_glspzb",
+      "display_name": "关联商品指标",
+      "type": "textarea",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": "商品指标"
+    },
+    {
+      "name": "contract_jszq",
+      "display_name": "结算周期",
+      "type": "text",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": "业务信息"
+    },
+    {
+      "name": "contract_jsfs",
+      "display_name": "结算方式",
+      "type": "text",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_jfd",
+      "display_name": "交付地",
+      "type": "address",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_jffs",
+      "display_name": "交付方式",
+      "type": "text",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_glht",
+      "display_name": "关联合同名称",
+      "type": "hierarchy",
+      "delete_option": "NoAction",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": "关联合同"
+    },
+    {
+      "name": "contract_glhtbh",
+      "display_name": "关联合同编号",
+      "type": "text",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_FilesName",
+      "display_name": "文件名称",
+      "type": "folder",
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "",
+      "group": "合同文件"
+    },
+    {
+      "name": "contract_suggest",
+      "display_name": "合同意见",
+      "type": "textarea",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": "其他"
+    },
+    {
+      "name": "contract_sxzt",
+      "display_name": "授信状态",
+      "type": "picklist",
+      "options": {
+        "related": "",
+        "list": {
+          "all": {
+            "options_value": [
+              "已授信",
+              "未授信"
+            ]
+          }
+        }
+      },
+      "nullable": false,
+      "index": false,
+      "unique": false,
+      "searchable": false,
+      "default_value": "未授信",
+      "group": "授信"
+    },
+    {
+      "name": "contract_sxedd",
+      "display_name": "关联授信额度单",
+      "type": "lookup",
+      "object_name": "LineOfCredit",
+      "delete_option": "NoAction",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_sxje",
+      "display_name": "授信金额",
+      "type": "currency",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": ""
+    },
+    {
+      "name": "contract_sxeddh",
+      "display_name": "授信单号",
+      "type": "text",
+      "nullable": true,
+      "index": true,
+      "unique": true,
+      "searchable": true,
+      "default_value": "",
+      "group": ""
+    }
+  ]
+}

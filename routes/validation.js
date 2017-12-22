@@ -15,12 +15,12 @@ router.get('/:metaName', function(req, res, next) {
     var options = {
         "method": "GET",
         "hostname": rip,
-        "port": "7010",
-        "path": "/api/v1.0/"+rtenement+"/"+req.params.metaName+"/meta",
+        "port": "7020",
+        "path": "/api/v1.0/"+rtenement+"/"+req.params.metaName+"/meta/validations",
         "headers": {
             "x-token": rtoken,
             "cache-control": "no-cache",
-            "postman-token": "863c4785-aa37-d20d-73f5-d83ca2b851fb"
+            "postman-token": "2b93c463-921c-1e24-238e-50fe30443a11"
         }
     };
 
@@ -34,16 +34,7 @@ router.get('/:metaName', function(req, res, next) {
         res2.on("end", function () {
             var result = Buffer.concat(chunks);
             var json = JSON.parse(result.toString());
-            //console.log(json);
-            //console.log(json.body.schema);
-            // var schema = json.body.schema;
-            // for(var k in schema ){
-            //     //console.log(k + " " + schema[k]);
-            //     for(var v in schema[k]){
-            //         console.log(v+""+schema[k][v])
-            //     }
-            // }
-            res.render('seeDetail', json);
+            res.render('validation', json);
 
         });
     });

@@ -26,6 +26,9 @@ var meta = require('./routes/meta');
 var seeDetail = require('./routes/seeDetail');
 var schema = require('./routes/schema');
 var tenement = require('./routes/tenement');
+var trigger = require('./routes/trigger');
+var validation = require('./routes/validation');
+var approve = require('./routes/approve');
 
 
 //app注册
@@ -60,6 +63,9 @@ app.use('/meta', meta);
 app.use('/see', seeDetail);
 app.use('/schema', schema);
 app.use('/tenement', tenement);
+app.use('/trigger', trigger);
+app.use('/validation', validation);
+app.use('/approve', approve);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

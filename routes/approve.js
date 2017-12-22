@@ -4,8 +4,7 @@ var http = require("http");
 
 var router = express.Router();
 
-
-router.get('/:metaName', function(req, res, next) {
+router.get('/:metaName', function (req, res, next) {
 
     //获取cookies
     var rip = req.cookies.ip;
@@ -16,11 +15,11 @@ router.get('/:metaName', function(req, res, next) {
         "method": "GET",
         "hostname": rip,
         "port": "7010",
-        "path": "/api/v1.0/"+rtenement+"/"+req.params.metaName+"/meta",
+        "path": "/api/v1.0/" + rtenement + "/service/approvals/template/object/" + req.params.metaName,
         "headers": {
             "x-token": rtoken,
             "cache-control": "no-cache",
-            "postman-token": "863c4785-aa37-d20d-73f5-d83ca2b851fb"
+            "postman-token": "e0036f4f-8225-d96e-4a77-7e5500e4d530"
         }
     };
 
@@ -32,19 +31,8 @@ router.get('/:metaName', function(req, res, next) {
         });
 
         res2.on("end", function () {
-            var result = Buffer.concat(chunks);
-            var json = JSON.parse(result.toString());
-            //console.log(json);
-            //console.log(json.body.schema);
-            // var schema = json.body.schema;
-            // for(var k in schema ){
-            //     //console.log(k + " " + schema[k]);
-            //     for(var v in schema[k]){
-            //         console.log(v+""+schema[k][v])
-            //     }
-            // }
-            res.render('seeDetail', json);
-
+            var body = Buffer.concat(chunks);
+            res.render('approve', JSON.parse(body.toString()));
         });
     });
 

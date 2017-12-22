@@ -13,6 +13,10 @@ html
         each val, index in body
             li= index + '  :  ' + val.display_name
             a(href='/see/'+index) SeeDetail
+            br
+            a(href='/trigger/'+index) SeeTrigger
+            br
+            a(href='/validation/'+index) SeeValidation
 
 
 
