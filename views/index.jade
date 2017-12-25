@@ -8,9 +8,46 @@ html
             include ../public/stylesheets/style.css
         script
             include ../public/javascripts/index.js
+        include ../public/static/head.jade
     body
-        ul
-            p: a(href='/static/tenement.html') 租户配置
-            p: a(href='/meta/get') 对象浏览
-            p: a(href='/static/meta.html') 创建自定义对象
-            p: a(href='javascript:void()') 其他
+        div
+            img(src="/images/foo.png")
+
+            ul
+                p: a(href='javascript:void(0)' id='1') 租户配置
+                p: a(href='javascript:void(0)' id='2') 对象浏览
+                p: a(href='javascript:void(0)' id='3') 创建自定义对象
+                p: a(href='javascript:void(0)' id='4') 其他
+        div(style="position:absolute;left:300px;right:0px;top:0px")
+            iframe(id='myIframe',src='/meta/get',hight='100%', width='100%')
+
+        script.
+            function calHeight(doc) {
+                var cHeight = Math.max(doc.body.clientHeight, doc.documentElement.clientHeight);
+                var sHeight = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight);
+                var finalHeight = Math.max(sHeight, cHeight);
+                return finalHeight;
+            }
+            function calWidth(doc) {
+                var cWidth = Math.max(doc.body.clientWidth, doc.documentElement.clientWidth);
+                var sWidth = Math.max(doc.body.scrollWidth, doc.documentElement.scrollWidth);
+                var width = Math.max(cWidth, sWidth);
+                return width;
+            }
+            var ifr = document.getElementById('myIframe');
+            ifr.onload = function() {
+                var iDoc = ifr.contentDocument;
+                var height = calHeight(iDoc);
+                var width = calWidth(iDoc);
+                ifr.style.height = height + 'px';
+                ifr.style.width = width + 'px';
+            }
+            $('#1').bind('click',function(){
+                $('#myIframe').attr('src','/static/tenement.html')
+            })
+            $('#2').bind('click', function () {
+                $('#myIframe').attr('src', '/meta/get')
+            })
+            $('#3').bind('click', function () {
+                $('#myIframe').attr('src', '/static/meta.html')
+            })

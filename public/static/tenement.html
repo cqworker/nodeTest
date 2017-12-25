@@ -3,12 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>Tenement</title>
+    <link rel="stylesheet" href="../stylesheets/bootstrapform.css" type="text/css">
+    <script type="text/javascript" src="../javascripts/jquery-3.2.1.min.js"></script>
 </head>
 <body>
-<form method="post" action="/tenement">
-    x-token:<input type="text" name="xToken" value="AQsCAH4ZylkAAEFRQUNkNVZWa2M3UkNBQUFQU0xlNHhRYzVCUWVDQUFBQVFBQ2Q1VlZrYzdSQ0FBQUFNWE80eFFjNUJRZENBQUHpdByJItptku7_xrJZvPRPvw8ETwX8c74DTTHaq5ClR2ouJbEKqLDInLz-P_KmENSsJMTtcrOe0pjlIlTItpid"><br/>
-    tenementName:<input type="text" name="tenement" value="GuoXinLianCheng"><br/>
-    ip:<input type="text" name="ip" value="10.100.250.133"><br/>
+<div align="center">
+    <h2>环境配置</h2>
+
+</div>
+<form method="post" action="/tenement" class="bootstrap-frm">
+    <table>
+    <tr>
+        <td>ip:</td>
+        <td><input type="text" name="ip" value="10.100.250.133" style="width:380px;"><br/>
+        </td>
+    </tr>
+    <tr>
+        <td>x-token:</td>
+        <td><input type="text" name="xToken" style="width:380px;"
+                   value="AQsCAH4ZylkAAEFRQUNkNVZWa2M3UkNBQUFQU0xlNHhRYzVCUWVDQUFBQVFBQ2Q1VlZrYzdSQ0FBQUFNWE80eFFjNUJRZENBQUHpdByJItptku7_xrJZvPRPvw8ETwX8c74DTTHaq5ClR2ouJbEKqLDInLz-P_KmENSsJMTtcrOe0pjlIlTItpid"><br/>
+    </td>
+    </tr>
+    <tr>
+        <td>tenementName:</td>
+        <td><input type="text" name="tenement" value="GuoXinLianCheng" style="width:380px;"><br/>
+        </td>
+    </tr>
+    </table>
     <input type="submit" value="配置">
 </form>
 </body>

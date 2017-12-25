@@ -3,15 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <title>Tenement</title>
+    <link rel="stylesheet" href="../stylesheets/bootstrapform.css" type="text/css">
+    <script type="text/javascript" src="../javascripts/jquery-3.2.1.min.js"></script>
 </head>
 <body>
+<h2 align="center">创建自定义对象</h2>
+<form class="bootstrap-frm">
+    <strong>创建自定义对象</strong><span style="display: none" id="success">√</span><span style="display: none" id="defeat">×</span><br/><br/>
 display_name:<input type="text" name="meta_display_name" id="dis"><br/>
-dataBase_name:<input type="text" id="meta"><span style="display: none" id="success">√</span><span style="display: none" id="defeat">×</span>
-<button id="checkMeta">checkMeta</button>
-<button id="createObj">createMeta</button>
+dataBase_name:<input type="text" id="meta"><br/>
+    <input type="button" id="checkMeta" value="检查名称是否可用"/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="button" id="createObj" value="创建"/>
+</form>
+
+<div align="center">
+
+</div>
 <br/>
-ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
-<div id="myDiv">
+<div align="center">
+ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>
+</div>
+    <div id="myDiv">
     <table>
         <thead id="mHead"></thead>
 
@@ -72,8 +84,8 @@ ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
                 $('#mHead').html(strh);
                 $('#mBody').html('');
                 $('#mBody').html(strb);
-               // console.log(strh)
-               // console.log(strb)
+                // console.log(strh)
+                // console.log(strb)
             };
             var s = reader.readAsText(file);
 
@@ -106,7 +118,7 @@ ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
                 var start_number = document.getElementsByName('start_number')[i].value;
                 var default_value = document.getElementsByName('default_value')[i].value;
                 var group = document.getElementsByName('group')[i].value;
-                if(group){
+                if (group) {
                     tempGroup = group;
                 }
                 //[{},{}]
@@ -157,7 +169,7 @@ ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
                     json += "\"group\":\"" + tempGroup + "\"},";
                 }
             }
-           // console.log(json)
+            // console.log(json)
             $.ajax({
                 url: '/meta/create',
                 type: 'post',
@@ -183,19 +195,19 @@ ObjectCsv:<input type="file" onchange="jsReadFiles(this.files)"/>&nbsp;
             })
         });
 
-        $('#checkMeta').on('click',function () {
+        $('#checkMeta').on('click', function () {
             var metaName = $('#meta').val();
             $.ajax({
-                url: '/meta/'+metaName,
+                url: '/meta/' + metaName,
                 type: 'get',
                 dataType: 'json',
                 success: function (data) {
                     if (data.success) {
-                        $('#defeat').css('display','none');
-                        $('#success').css('display','block');
-                    }else{
-                        $('#success').css('display','none');
-                        $('#defeat').css('display','block');
+                        $('#defeat').css('display', 'none');
+                        $('#success').css('display', 'block');
+                    } else {
+                        $('#success').css('display', 'none');
+                        $('#defeat').css('display', 'block');
                     }
                 }
             })
