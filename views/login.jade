@@ -1,5 +1,33 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome ! #{name}
+//jade
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        title Login
+        include ../public/static/head
+    body
+        h2 美洽实施
+        form.bootstrap-frm
+            a= '帐号: '
+            input#name(type='text')
+            br
+            a= '密码: '
+            input#pwd(type='text')
+            input#but(type='button' value='登录')
+    script.
+        $('#but').bind('click',function(){
+            var name = $('#name').val();
+            var pwd = $('#pwd').val();
+            $.ajax({
+                url:'/login/a',
+                data:{
+                    name:name,
+                    pwd:pwd
+                },
+                type:'post',
+                dataType:'json',
+                success:function(data){
+                    alert(data.success);
+                }
+            })
+        })
