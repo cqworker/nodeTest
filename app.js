@@ -1,9 +1,18 @@
+//类似于导包
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+
+//log中间件
+var log4js = require('log4js');
+//console是默认的appender，使用cheese这个appender时会将日志记录文件中，日志文件名为cheese.log
+log4js.configure({
+    appenders: { common: { type: 'file', filename: 'logs/common.log' } },
+    categories: { default: { appenders: ['common'], level: 'error' } }
+});
 
 //mysql中间件
 var mysql = require('mysql'),
@@ -47,6 +56,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+//设置日志级别
+app.use(log4js.connectLogger(log4js.getLogger('common'), { level: log4js.levels.INFO }));
 //添加mysql中间件
 app.use(myConnection(mysql, dbOptions, 'single'));
 //静态文件

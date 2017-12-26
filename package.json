@@ -14,6 +14,7 @@
     "fetch": "^1.1.0",
     "jade": "~1.11.0",
     "jstransformer-markdown-it": "^2.0.0",
+    "log4js": "^2.4.1",
     "morgan": "~1.9.0",
     "mysql": "^2.15.0",
     "request": "^2.83.0",

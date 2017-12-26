@@ -1,4 +1,5 @@
 var express = require('express');
+var logger = require('log4js');
 var router = express.Router();
 
 /* GET users listing. */
@@ -31,6 +32,8 @@ router.post('/a', function (req, res, next) {
                     if (jso[0]) {
                         res.json({success: true});
                     } else {
+                        var log1 = logger.getLogger('common');
+                        log1.error("first common log!");
                         res.json({success: false});
                     }
                 }
