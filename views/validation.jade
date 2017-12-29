@@ -4,6 +4,7 @@ html
     head
         meta(charset='utf-8')
         title Validation
+        include ../public/static/head.jade
         style
             include ../public/stylesheets/style.css
         script
@@ -14,21 +15,55 @@ html
         br
         if body
             for val,index in body
-                p= index + " : "
-                a= '是否启用:'
-                input(type='checkbox',checked=val.is_valid)
-                br
-                a= '错误提示: '
-                a= val.error_message
-                br
-                //a= val.description
-                textarea= val.expression
-                br
-                a= '-----------------'
+                .myDiv
+                    a= '验证器名称: '
+                    input.VerName(type='text',value= "#{index}")
+                    br
+                    a= '是否启用:'
+                    input.valid(type='checkbox',checked='#{val.is_valid}')
+                    br
+                    a= '错误提示: '
+                    input.errMsg(type='text',value= "#{val.error_message}" size=50)
+                    br
+                    br
+                    //a= val.description
+                    textarea.validationdd #{val.expression}
+                    br
+                    button.editBut 修改
+                    br
+                    a(style='color:red')= '-------------------------------------'
+                    br
         else
             ul
                 li= '该对象无Validation'
 
+    script.
+        $(function () {
+            $('.editBut').on('click', function () {
+                var arr = $(this).parent('div').children('input');
+                var name = arr[0].value;
+                var is_valid = arr[1].checked;
+                var error_message = arr[2].value;
+                var expression = $(this).parent('div').children('.validationdd').val();
+                $.ajax({
+                    url:'/validation/edit',
+                    data:{
+                        name:name,
+                        expression: expression,
+                        is_valid: is_valid,
+                        description: '',
+                        error_message: error_message,
+                        position: ''
+                    },
+                    dataType:'json',
+                    type:'post',
+                    success:function(data){
+                        alert(data.success);
+                    }
+                })
+
+            })
+        })
 
 
 

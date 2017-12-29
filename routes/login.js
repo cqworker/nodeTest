@@ -1,10 +1,15 @@
 var express = require('express');
 var logger = require('log4js');
+
 var router = express.Router();
 
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-    res.render('login', {name: 'Express'});
+
+
+
+router.post('/b',function(req, res,next) {
+
+
+
 });
 
 /**

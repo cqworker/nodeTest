@@ -4,10 +4,12 @@ html
     head
         meta(charset='utf-8')
         title Trigger
+        include ../public/static/head.jade
         style
             include ../public/stylesheets/style.css
         script
             include ../public/javascripts/index.js
+
     body
         //图片处理或触发一次访问
         img(src="/images/foo.png")
@@ -15,11 +17,38 @@ html
         if body
             a=  '触发器: '
             br
-            textarea= body.trigger
+            textarea#trigger #{body.trigger}
         else
             ul
                 li= '该对象无trigger'
+        br
+        button#editTrigger 提交修改
 
-
+        script.
+            $('#editTrigger').bind('click',function(){
+                var trigger = $('#trigger').val();
+                $.ajax({
+                    url:'/trigger/create',
+                    data:{
+                        trigger:trigger
+                    },
+                    dataType:'json',
+                    type:'post',
+                    success:function (data) {
+                        alert(data.success);
+                    }
+                })
+            });
+            $('#deleteTrigger').bind('click', function () {
+                $.ajax({
+                    url: '/trigger/create',
+                    data: {},
+                    dataType: 'json',
+                    type: 'post',
+                    success: function (data) {
+                        alert(data.success);
+                    }
+                })
+            })
 
 
