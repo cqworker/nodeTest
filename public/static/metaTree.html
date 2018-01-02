@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<HTML>
+<head>
+    <title></title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../stylesheets/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="../javascripts/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../javascripts/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../javascripts/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../javascripts/jquery.ztree.exedit.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+</head>
+
+<body>
+<script>
+    //初始化nodes
+//    $.ajax({
+//        url: '/meta/tree',
+//        type: 'get',
+//        dataType: 'json',
+//        success: function (data) {
+//            alert(JSON.stringify(data));
+//        }
+//    })
+</script>
+
+<ul id="treeDemo" class="ztree"></ul>
+
+</body>
+
+<script type="text/javascript">
+    $(function () {
+        //zTree
+        // 异步加载,发送数据必须要包含父id,第一次加载根id为null
+        // 返回数据中必须要含有id name isParent
+        var setting = {
+            view: {
+                selectedMulti: false
+            }
+
+           , async: {
+                enable: true,
+                type: 'get',
+                url: "/meta/tree",
+                autoParam: [],//自动提交父节点属性参数
+                otherParam: [],//静态参数
+                dataType: "text"
+            }
+            , callback: {
+                beforeAsync: zTreeBeforeAsync
+                , onAsyncSuccess: zTreeOnAsyncSuccess
+                , onAsyncError: zTreeOnAsyncError
+                , onClick: zTreeOnClick
+            }
+        };
+
+
+        function zTreeBeforeAsync(treeId, treeNode) {
+            return true;
+
+        }
+
+        function zTreeOnAsyncSuccess(event, treeId, treeNode, msg) {
+
+        }
+
+        function zTreeOnAsyncError(event, treeId, treeNode, XMLHttpRequest, textStatus, errorThrown) {
+            alert(XMLHttpRequest);
+        }
+
+        function zTreeOnClick(event, treeId, treeNode) {
+
+        }
+
+            $.fn.zTree.init($("#treeDemo"), setting);
+
+    })
+
+</script>
+
+</HTML>

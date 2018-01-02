@@ -41,6 +41,56 @@ router.get('/get', function (req, res, next) {
 
 });
 
+
+router.get('/tree', function (req, res, next) {
+    //获取cookies
+    var rip = req.cookies.ip;
+    var rtoken = req.cookies.xToken;
+    var rtenement = req.cookies.tenement;
+
+    var options = {
+        "method": "GET",
+        "hostname": rip,
+        "port": "7010",
+        "path": "/api/v1.0/" + rtenement + "/all-metas?acl=true",
+        "headers": {
+            "x-token": rtoken,
+            "cache-control": "no-cache",
+            "postman-token": "6102c801-da94-8ab7-e4f9-ca888864b3d4"
+        }
+    };
+    var req2 = http.request(options, function (res2) {
+        var chunks = [];
+
+        res2.on("data", function (chunk) {
+            chunks.push(chunk);
+        });
+
+        res2.on("end", function () {
+            var body = Buffer.concat(chunks);
+            // console.log(body.toString());
+            var jsonBody = JSON.parse(body.toString()).body;
+            var respBody ={};
+            var str = "{\"id\": \"StandardObjects\", \"name\": \"标准对象\",\"children\":[";
+            //{id:"xxx",name: "日交收单"},
+            for (var k in jsonBody) {
+                respBody.id = k;
+                respBody.name = jsonBody[k].display_name;
+                respBody.isParent = true;
+                var strOne = JSON.stringify(respBody);
+                var strTwo = strOne.substring(0,strOne.length-1);
+                str += strTwo+",\"children\":[{\"id\":\"validation\",\"name\":\"验证器\",\"isParent\":false},{\"id\":\"trigger\",\"name\":\"触发器\",\"isParent\":false}]},";
+            }
+            str = str.substring(0,str.length-1)+"]}";
+            res.json(JSON.parse(str));
+        });
+    });
+    req2.end();
+    //
+
+});
+
+
 /**
  * 创建多行
  */
