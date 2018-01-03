@@ -10,7 +10,6 @@ html
         script
             include ../public/javascripts/index.js
     body
-        //图片处理或触发一次访问
         img(src="/images/foo.png")
         br
         if body
@@ -20,7 +19,10 @@ html
                     input.VerName(type='text',value= "#{index}")
                     br
                     a= '是否启用:'
-                    input.valid(type='checkbox',checked='#{val.is_valid}')
+                    if val.is_valid
+                        input.valid(type='checkbox',checked='#{val.is_valid}')
+                    else
+                        input.valid(type='checkbox')
                     br
                     a= '错误提示: '
                     input.errMsg(type='text',value= "#{val.error_message}" size=50)

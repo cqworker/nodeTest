@@ -14,3 +14,18 @@ p #{data}
 ul
 each val, index in data
     li= index + ': ' + val
+
+
+
+如何创建对象，目前了解到的可以和mgdb结合,如何使用mysql,和为什么mgdb的使用会大大多余mysql
+    var userSchema = new mongoose.Schema({
+        name: { type: String, required: true },
+        email: { type: String, unique: true, required: true },
+        hash: String,
+        salt:String,
+        createdOn: {
+            type: Date,
+            default: Date.now
+        }
+    });
+    mongoose.model('User', userSchema);

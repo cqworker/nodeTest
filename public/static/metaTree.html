@@ -15,19 +15,15 @@
 
 <body>
 <script>
-    //初始化nodes
-//    $.ajax({
-//        url: '/meta/tree',
-//        type: 'get',
-//        dataType: 'json',
-//        success: function (data) {
-//            alert(JSON.stringify(data));
-//        }
-//    })
 </script>
 
 <ul id="treeDemo" class="ztree"></ul>
 
+<div style="display: none; position: absolute;right: 10px ;top :10px" id="myDiv">
+    <table id="myTable" style="display: none;">
+    </table>
+    <textarea id="myText" style="display: none"></textarea>
+</div>
 </body>
 
 <script type="text/javascript">
@@ -39,8 +35,7 @@
             view: {
                 selectedMulti: false
             }
-
-           , async: {
+            , async: {
                 enable: true,
                 type: 'get',
                 url: "/meta/tree",
@@ -71,10 +66,68 @@
         }
 
         function zTreeOnClick(event, treeId, treeNode) {
+//            alert(treeNode.id);
+            $.ajax({
+                url: "/meta/detail/" + treeNode.id,
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                    $('#myDiv').show();
+                    var body = data.body;
+                    if(body.schema !== undefined){
+                        var schema = body.schema;
+
+                        var html1 = "";
+                        for (k in schema) {
+                            html1 +="<tr>";
+                            html1 +="<td>";
+                            html1 += k;
+                            html1 +="</td>";
+                            html1 +="<td>";
+                            html1 += schema[k].display_name;
+                            html1 +="</td>";
+                            html1 +="<td>";
+                            html1 += schema[k].type;
+                            html1 +="</td>";
+                            html1 +="</tr>";
+                        }
+                        $('#myTable').show();
+                        $('#myText').hide();
+                        $('#myTable').html(html1);
+
+                    }else if(body.trigger !== undefined){
+                        $('#myText').show();
+                        $('#myTable').hide();
+                        $('#myText').text(body.trigger)
+                    }else{
+                        $('#myTable').show();
+                        var html2 = "";
+                        for (k in body) {
+                            html2 +="<tr>";
+                            html2 +="<td>";
+                            html2 += k;
+                            html2 +="</td>";
+                            html2 +="<td>";
+                            html2 += body[k].expression;
+                            html2 +="</td>";
+                            html2 +="<td>";
+                            html2 += body[k].is_valid;
+                            html2 +="</td>";
+                            html2 +="<td>";
+                            html2 += body[k].error_message;
+                            html2 +="</td>";
+                            html2 +="</tr>";
+                        }
+                        $('#myTable').html(html2);
+                    }
+
+
+                }
+            })
 
         }
 
-            $.fn.zTree.init($("#treeDemo"), setting);
+        $.fn.zTree.init($("#treeDemo"), setting);
 
     })
 

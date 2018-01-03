@@ -91,7 +91,7 @@ router.post('/edit',function (req,res,netx) {
         res2.on("end", function () {
             var body = Buffer.concat(chunks);
             var logger = log.getLogger('common');
-            logger.error(body.code);
+            logger.error(body.toString());
         });
     });
 

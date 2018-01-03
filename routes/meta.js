@@ -70,7 +70,7 @@ router.get('/tree', function (req, res, next) {
             var body = Buffer.concat(chunks);
             // console.log(body.toString());
             var jsonBody = JSON.parse(body.toString()).body;
-            var respBody ={};
+            var respBody = {};
             var str = "{\"id\": \"StandardObjects\", \"name\": \"标准对象\",\"children\":[";
             //{id:"xxx",name: "日交收单"},
             for (var k in jsonBody) {
@@ -78,10 +78,10 @@ router.get('/tree', function (req, res, next) {
                 respBody.name = jsonBody[k].display_name;
                 respBody.isParent = true;
                 var strOne = JSON.stringify(respBody);
-                var strTwo = strOne.substring(0,strOne.length-1);
-                str += strTwo+",\"children\":[{\"id\":\"validation\",\"name\":\"验证器\",\"isParent\":false},{\"id\":\"trigger\",\"name\":\"触发器\",\"isParent\":false}]},";
+                var strTwo = strOne.substring(0, strOne.length - 1);
+                str += strTwo + ",\"children\":[{\"id\":\"" + k + "_validation\",\"name\":\"验证器\",\"isParent\":false},{\"id\":\"" + k + "_trigger\",\"name\":\"触发器\",\"isParent\":false}]},";
             }
-            str = str.substring(0,str.length-1)+"]}";
+            str = str.substring(0, str.length - 1) + "]}";
             res.json(JSON.parse(str));
         });
     });
@@ -237,6 +237,109 @@ router.get('/:metaName', function (req, res, next) {
         });
     });
     req2.end();
+    //
+
+});
+
+/**
+ * 对象详情
+ */
+router.get('/detail/:metaName', function (req, res, next) {
+    var metaName = req.params.metaName;
+    //获取cookies
+    var rip = req.cookies.ip;
+    var rtoken = req.cookies.xToken;
+    var rtenement = req.cookies.tenement;
+    //判断字符串是否包含一个子字符串
+    if (metaName.indexOf("_") > -1) {//查询对象的trigger,validation
+        var arr = metaName.split("_");
+        var metaObj = arr[0];
+        if(arr[1]==="trigger"){
+            var options = {
+                "method": "GET",
+                "hostname": rip,
+                "port": "7020",
+                "path": "/api/v1.0/"+rtenement+"/"+metaObj+"/meta/trigger",
+                "headers": {
+                    "x-token": rtoken,
+                    "cache-control": "no-cache",
+                    "postman-token": "f0794dfa-f40c-9e61-e045-54f1111d3081"
+                }
+            };
+
+            var req2 = http.request(options, function (res2) {
+                var chunks = [];
+
+                res2.on("data", function (chunk) {
+                    chunks.push(chunk);
+                });
+
+                res2.on("end", function () {
+                    var body = Buffer.concat(chunks);
+                    res.json(JSON.parse(body.toString()));
+                });
+            });
+
+            req2.end();
+        }else{
+            var options = {
+                "method": "GET",
+                "hostname": rip,
+                "port": "7020",
+                "path": "/api/v1.0/"+rtenement+"/"+metaObj+"/meta/validations",
+                "headers": {
+                    "x-token": rtoken,
+                    "cache-control": "no-cache",
+                    "postman-token": "8abe4e2f-bf7c-42cb-9b91-28ca9b4569ce"
+                }
+            };
+
+            var req2 = http.request(options, function (res2) {
+                var chunks = [];
+
+                res2.on("data", function (chunk) {
+                    chunks.push(chunk);
+                });
+
+                res2.on("end", function () {
+                    var body = Buffer.concat(chunks);
+                    // console.log(body.toString());
+                    res.json(JSON.parse(body.toString()));
+                });
+            });
+
+            req2.end();
+            //
+        }
+    } else {// 查询标准对象
+        var options = {
+            "method": "GET",
+            "hostname": rip,
+            "port": "7010",
+            "path": "/api/v1.0/meta/" + metaName + "/meta",
+            "headers": {
+                "x-token": rtoken,
+                "cache-control": "no-cache",
+                "postman-token": "4c3e3589-03d9-a309-df49-d7a7926bcfc9"
+            }
+        };
+
+        var req2 = http.request(options, function (res2) {
+            var chunks = [];
+
+            res2.on("data", function (chunk) {
+                chunks.push(chunk);
+            });
+
+            res2.on("end", function () {
+                var body = Buffer.concat(chunks);
+                res.json(JSON.parse(body.toString()));
+            });
+        });
+        req2.end();
+    }
+
+
     //
 
 });
