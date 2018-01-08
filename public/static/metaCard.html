@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tenement</title>
+    <link rel="stylesheet" href="../stylesheets/bootstrapform.css" type="text/css">
+    <script type="text/javascript" src="../javascripts/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../javascripts/echarts.min.js"></script>
+    <!--js中定义对象-->
+    <script type="text/javascript" src="Meta.js"></script>
+</head>
+<body>
+<div align="center">
+    <h2 id="titleName">对象统计图</h2>
+
+</div>
+
+<div id="main" style="width: 1200px;height:400px;"></div>
+
+
+
+<script>
+    var metaName = meta.name;
+    if (metaName){
+        $('#titleName').html(metaName+'对象统计图')
+    }
+
+
+</script>
+
+<script>
+
+    var myChart = echarts.init(document.getElementById('main'));
+    // 显示标题，图例和空的坐标轴
+    myChart.setOption({
+        title: {
+            text: '对象字段统计'
+        },
+        tooltip: {},
+        legend: {
+            data: ['字段数量']
+        },
+        xAxis: {
+            data: []
+        },
+        yAxis: {},
+        series: [{
+            name: '数量',
+            type: 'bar',
+            data: []
+        }]
+    });
+
+    // 异步加载数据
+    $.ajax({
+        url:'/meta/count',
+        type:'get',
+        dataType:'json',
+        success:function (data) {
+            // 填入数据
+            myChart.setOption({
+                xAxis: {
+                    data: data.xstr
+                },
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: '数量',
+                    data: data.ystr
+                }]
+            })
+        }
+    })
+
+</script>
+
+</body>
+</html>

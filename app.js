@@ -46,6 +46,7 @@ var tenement = require('./routes/tenement');
 var trigger = require('./routes/trigger');
 var validation = require('./routes/validation');
 var approve = require('./routes/approve');
+var ticket = require('./routes/ticket');
 
 
 //app注册
@@ -120,6 +121,7 @@ app.use('/tenement', tenement);
 app.use('/trigger', trigger);
 app.use('/validation', validation);
 app.use('/approve', approve);
+app.use('/ticket', ticket);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

@@ -1,0 +1,34 @@
+//jade
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        title Ticket
+        include ../public/static/head.jade
+        style
+            include ../public/stylesheets/style.css
+        script
+            include ../public/javascripts/index.js
+    body
+        a= '图片处理或触发一次访问'
+        img(src="/images/foo.png")
+        a #{status}
+        if body
+            ul
+            each val, index in map
+                li:a= val
+                li:a= index
+            each val2 in result
+                a= val2
+
+                br
+            a=  '请求结果: '
+            a=  status
+            br
+
+
+
+
+
+
+

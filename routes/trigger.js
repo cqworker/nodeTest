@@ -34,7 +34,7 @@ router.get('/:metaName', function (req, res, next) {
 
         res2.on("end", function () {
             var body = Buffer.concat(chunks);
-            console.log(body.toString());
+            //console.log(body.toString());
             res.render('trigger', JSON.parse(body.toString()));
         });
     });
@@ -53,7 +53,7 @@ router.post('/create',function (req, res, next) {
 
     var jsonObj = req.body;
     var jsonstr = JSON.stringify(jsonObj)
-    console.log(jsonstr);
+   // console.log(jsonstr);
     var options = {
         "method": "POST",
         "hostname": rip,

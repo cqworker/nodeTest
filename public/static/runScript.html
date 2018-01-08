@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tenement</title>
+    <link rel="stylesheet" href="../stylesheets/bootstrapform.css" type="text/css">
+    <script type="text/javascript" src="../javascripts/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<div align="center">
+    <h2>runScript</h2>
+
+</div>
+
+<div id="main" style="width: 1200px;height:400px;">
+    <textarea id="scriptText">alert('run ok!')</textarea>
+    <br>
+    <button id="runScript">RUN</button>
+</div>
+
+
+<script>
+    $(function () {
+        $('#runScript').bind('click',function () {
+            var textContext = $(this).val();
+            runScript(textContext);
+        })
+    })
+    function runScript(textContext){
+
+    }
+
+</script>
+
+</body>
+</html>

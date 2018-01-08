@@ -13,6 +13,7 @@ router.get('/get', function (req, res, next) {
     var rtoken = req.cookies.xToken;
     var rtenement = req.cookies.tenement;
 
+
     var options = {
         "method": "GET",
         "hostname": rip,
@@ -89,6 +90,69 @@ router.get('/tree', function (req, res, next) {
     //
 
 });
+
+/**
+ * 获得每个对象的字段数
+ */
+router.get('/count', function (req, res, next) {
+    //获取cookies
+    var rip = req.cookies.ip;
+    var rtoken = req.cookies.xToken;
+    var rtenement = req.cookies.tenement;
+
+    var options = {
+        "method": "GET",
+        "hostname": rip,
+        "port": "7010",
+        "path": "/api/v1.0/" + rtenement + "/all-metas?acl=false",
+        "headers": {
+            "x-token": rtoken,
+            "cache-control": "no-cache",
+            "postman-token": "6102c801-da94-8ab7-e4f9-ca888864b3d4"
+        }
+    };
+    var req2 = http.request(options, function (res2) {
+        var chunks = [];
+
+        res2.on("data", function (chunk) {
+            chunks.push(chunk);
+        });
+
+        res2.on("end", function () {
+
+            //X [,,,,]
+            //Y [,,,,]
+
+            var body = Buffer.concat(chunks);
+            // console.log(body.toString());
+            var jsonBody = JSON.parse(body.toString()).body;
+            var Xstr = "[";
+            var Ystr = "[";
+            //{id:"xxx",name: "日交收单"},
+            for (var k in jsonBody) {
+                Xstr += "\""+jsonBody[k].display_name+"\",";
+                var i = 0 ;
+                for (var j in jsonBody[k].schema) {
+                    i++;
+                }
+                Ystr += i+",";
+            }
+            var ystr = Ystr.substring(0, Ystr.length - 1);
+            ystr +=  "]";
+            var xstr = Xstr.substring(0, Xstr.length - 1);
+            xstr +=  "]";
+            // console.log(xstr)
+            // console.log(ystr)
+            var str = "{\"xstr\":"+xstr+",\"ystr\":"+ystr+"}"
+            res.json(JSON.parse(str));
+        });
+    });
+    req2.end();
+    //
+
+});
+
+
 
 
 /**

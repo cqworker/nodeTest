@@ -5,6 +5,7 @@
     <title>Tenement</title>
     <link rel="stylesheet" href="../stylesheets/bootstrapform.css" type="text/css">
     <script type="text/javascript" src="../javascripts/jquery-3.2.1.min.js"></script>
+
 </head>
 <body>
 <div align="center">
@@ -13,24 +14,29 @@
 </div>
 <form method="post" action="/tenement" class="bootstrap-frm">
     <table>
-    <tr>
-        <td>ip:</td>
-        <td><input type="text" name="ip" value="10.102.1.64" style="width:380px;"><br/>
-        </td>
-    </tr>
-    <tr>
-        <td>x-token:</td>
-        <td><input type="text" name="xToken" style="width:380px;"
-                   value="AWYAAHUyBFoAAEFRQUNrNUh4RkliZURnQUFHTEw1OWJwUzdoUnZDUUFBQVFBQ2s1SHhGSWJlRGdBQWNMN3I5YnBTN2hSdUNRQUH29KZb95dSWepNWi70DzznXEElFx7pU9J-pm2o23blOqNeoULhdmaoHW_KmConP4nBgnKNk4T8MQl3G2ZlrEn8"><br/>
-    </td>
-    </tr>
-    <tr>
-        <td>tenementName:</td>
-        <td><input type="text" name="tenement" value="GuoXinLianCheng" style="width:380px;"><br/>
-        </td>
-    </tr>
+        <tr>
+            <td>ip:</td>
+            <td><input type="text" name="ip" value="10.102.1.64" style="width:380px;"><br/>
+            </td>
+        </tr>
+        <tr>
+            <td>x-token:</td>
+            <td><input type="text" name="xToken" style="width:380px;"
+                       value="AWYAAHUyBFoAAEFRQUNrNUh4RkliZURnQUFHTEw1OWJwUzdoUnZDUUFBQVFBQ2s1SHhGSWJlRGdBQWNMN3I5YnBTN2hSdUNRQUH29KZb95dSWepNWi70DzznXEElFx7pU9J-pm2o23blOqNeoULhdmaoHW_KmConP4nBgnKNk4T8MQl3G2ZlrEn8"><br/>
+            </td>
+        </tr>
+        <tr>
+            <td>tenementName:</td>
+            <td><input type="text" name="tenement" value="GuoXinLianCheng" style="width:380px;"><br/>
+            </td>
+        </tr>
     </table>
-    <input type="submit" value="配置">
+    <input type="submit" value="配置" name="submitBut">
 </form>
+
+<div id="main" style="width: 600px;height:400px;"></div>
+
+
+
 </body>
 </html>
