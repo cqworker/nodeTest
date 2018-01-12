@@ -1,0 +1,207 @@
+//jade
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        title MetaDetail
+        style
+            include ../public/stylesheets/style.css
+        script
+            include ../public/javascripts/index.js
+            include  ../public/javascripts/jquery-3.2.1.min.js
+    body
+        include ../public/static/meta.txt
+        :markdown-it
+            ### 1. Meta数据说明
+            说明
+            Meta数据相当于配置文件，是用来表示企业各种需求的元数据
+            Meta数据可以表示
+            数据库表结构(schema)
+            数据验证规则(validation)
+            可参考有关美洽的数据验证：
+            触发器(trigger)
+            依赖关系(depends)
+            选择过滤器(select filter)
+            视图过滤器(view filter)
+            动作(action)
+
+            实施工程师主要的工作就是通过操作Meta数据，构造企业软件的模型、业务逻辑
+
+            相关链接
+
+            通过直接构造API请求的方式操作
+            [Meta数据示例文档](http://wiki.meiqia.com/pages/viewpage.action?pageId=5702570)
+
+            ### 2. CSV文件格式
+            表头格式及说明
+
+            name	字段的英文名
+            display_name	字段的中文名
+            type	字段类型
+            options	选项
+            object_name	关联的对象
+            delete_option	关联的依赖程度
+            nullable	是否必填
+            index	是否加索引
+            unique	是否唯一
+            searchable	是否可搜索
+            related_type	字段的关系类型
+            expression	表达式
+            format	排序
+            start_number	排序起始值
+            default_value	默认值
+            filter	筛选条件过滤某些记录
+            group	分组信息
+
+            ### 3. 注意事项
+            #### 3.1 字段命名规则
+            字段名不能和sql的关键字相冲突，例如from之类的关键字不能作为字段名
+            每个类（标准对象）都应该包含一个名叫name的字段，这个字段用来显示该对象，例如用户名、订单号、企业名等(注意不能在该字段上添加对应关系)
+            表名不能与sql的关键字相冲突，例如Order之类的，不能作为表名.
+            3.2 CSV文件中piclist类型字段候选项定义的三种方式
+            #### 3.2.1 直接在options列中填入候选项,用 ; 分割
+            name	display_name	type	options
+            Status	状态	picklist	自建;未领取;已领取;已签约;已冻结;已废弃
+            显示效果如下:
+
+            美洽实施文档资料 > 3. Meta数据 > picklist01.png
+
+            #### 3.2.2 将选项定义到文件中
+            将候选项定义到/meta/option文件夹中的.CSV文件中(本例中为Department.CSV),在options列中填入@@direct;Department,其中@@direct为固定写法,Department为CSV文件名,中间用 ; 隔开.
+
+            name	display_name	type	options
+            AffiliatedDepartment	所属部门	picklist	@@direct;Department
+            CSV文件定义如下:
+
+            北京直销
+            上海直销
+            西区直销
+            西区渠道
+            深圳直销
+            线上资源直销
+            显示效果如下:
+
+            美洽实施文档资料 > 3. Meta数据 > picklist02.png
+
+
+
+            #### 3.2.3 动态关联
+            将候选项与另一个picklist类型字段的值动态关联.本例中,Industry字段动态关联IndustryCategory字段.
+
+            name	display_name	type	options
+            IndustryCategory	行业大类	picklist	@@category;Industry
+            Industry	行业	picklist	@@related;IndustryCategory;Industry
+            Industry.CSV定义如下:
+
+            IT|通信|电子|互联网	互联网
+
+            电子商务
+
+            金融
+
+            企业服务
+
+            教育
+
+            文化娱乐
+            金融业	基金/证券/期货/投资
+
+            银行
+
+            保险
+
+            信托/担保/拍卖/典当
+            房地产|建筑业	房地产/建筑/建材/工程
+
+            家具/室内设计/装饰装潢
+
+            物业管理/商业中心
+            显示效果如下:
+
+            美洽实施文档资料 > 3. Meta数据 > picklist3.gif
+
+            ### 4. 操作meta数据
+            #### 4.1 创建meta文件
+            meta文件以.csv为后缀名，置于/meta文件夹中。
+
+            meta
+            ├── Auction.csv
+            ├── CollectPayment.csv
+            ├── Contract.csv
+            ├── CustomerInfo.csv
+            ├── DemandInfo.csv
+            ├── FollowUpInfo.csv
+            ├── HousingInfo.csv
+            ├── Auction.trigger
+            ├── Contract.trigger
+            ├── options
+            │   └── Collect.csv
+            ├── validations
+            │   └── Warrant.csv
+            └── Warrant.csv
+
+
+            #### 4.2 配置/config/conf.json文件;
+            {
+                "env": "online",
+                    "global": {
+                    "TENANT": "Test01",
+                        "VERSION": "v1.0"
+                },
+                "online": {
+                    "TENANT_ID": "AQACd5VVkc5CaQAAE-je6dXX8hQJaAIA",
+                        "USER_ID": "AQACd5VVkc5CaQAArcrq6dXX8hQKaAIA",
+                            "META_MANAGER_ADDRESS": "10.100.250.133:7020",
+                                "ONE_ADDRESS": "10.100.250.133:7010",
+                                    "TOKEN": "ARA7BERwJloAAEFRQUNkNVZWa2M1Q2FRQUFyY3JxNmRYWDhoUUthQUlBQVFBQ2Q1VlZrYzVDYVFBQUUtamU2ZFhYOGhRSmFBSUEuxF_i9QEOgNpbcaYSB78DvGgg6eLvtfjttNlG-o6IOnW22NhLcpQ-y8A4pSzek9Mslc114JbAxIZlESNbsyK8",
+                                        "LAYOUT": {
+                        "url": "http://10.100.250.22:8555/abc",
+                            "pwd": "LbGKhZefk8jTNFVFsX",
+                                "userid": "admin"
+                    },
+                    "objects": [
+                        ["User", "用户"],
+                        ["Auction", "拍卖"],
+                        ["CustomerInfo", "客户"],
+                        ["FollowUpInfo", "跟进信息"],
+                        ["HousingInfo", "房源信息"],
+                        ["Warrant", "权证办理"],
+                        ["DemandInfo", "需求"],
+                        ["Receipt", "案款收据"],
+                        ["Contract", "合同"],
+                        ["CollectPayment", "收付款"],
+                        ["ResidentialQuartersInfo", "小区"],
+                        ["ParticipateAuction", "参与拍卖"],
+                        ["SeeInfo", "带看信息"]
+                    ]
+                }
+            }
+            #### 4.3 创建meta
+            选中标准对象的元数据将会被删除；
+
+            程序会读取meta文件夹中对应的csv文件并上传到服务器,并在服务器删除标准对象和validation，服务器返回信息会显示在右侧文本浏览框中。
+
+            #### 4.4 更新meta
+            在实施工具中切换至【更新元数据】选项卡，在标准对象复选框中勾选要更新元数据的标准对象，点击【更新元数据】按钮。
+
+            当meta文件某个字段有修改时,可以使用该命令进行更新操作,该命令不适用于添加或者删除操作;
+
+            #### 4.5 删除meta
+            在实施工具中切换至【删除元数据】选项卡，在标准对象复选框中勾选要删除元数据的标准对象，点击【删除元数据】按钮。
+            选中标准对象的元数据将会被删除。
+
+            #### 4.6 查询meta
+            在实施工具中切换至【查询元数据】选项卡，在下拉框中选择要查询元数据的标准对象，点击【查询元数据】按钮。
+
+            美洽实施文档资料 > 3. Meta数据 > image2018-1-9_15-45-49.png
+
+            美洽实施文档资料 > 3. Meta数据 > image2018-1-9_15-45-21.png
+
+            #### 4.7 删除字段
+            查询元数据之后，勾选需要删除的字段，点击【删除字段】按钮。
+
+            美洽实施文档资料 > 3. Meta数据 > image2018-1-9_15-53-45.png
+
+            ------
+
+

@@ -130,20 +130,20 @@ router.get('/count', function (req, res, next) {
             var Ystr = "[";
             //{id:"xxx",name: "日交收单"},
             for (var k in jsonBody) {
-                Xstr += "\""+jsonBody[k].display_name+"\",";
-                var i = 0 ;
+                Xstr += "\"" + jsonBody[k].display_name + "\",";
+                var i = 0;
                 for (var j in jsonBody[k].schema) {
                     i++;
                 }
-                Ystr += i+",";
+                Ystr += i + ",";
             }
             var ystr = Ystr.substring(0, Ystr.length - 1);
-            ystr +=  "]";
+            ystr += "]";
             var xstr = Xstr.substring(0, Xstr.length - 1);
-            xstr +=  "]";
+            xstr += "]";
             // console.log(xstr)
             // console.log(ystr)
-            var str = "{\"xstr\":"+xstr+",\"ystr\":"+ystr+"}"
+            var str = "{\"xstr\":" + xstr + ",\"ystr\":" + ystr + "}"
             res.json(JSON.parse(str));
         });
     });
@@ -151,8 +151,6 @@ router.get('/count', function (req, res, next) {
     //
 
 });
-
-
 
 
 /**
@@ -318,12 +316,12 @@ router.get('/detail/:metaName', function (req, res, next) {
     if (metaName.indexOf("_") > -1) {//查询对象的trigger,validation
         var arr = metaName.split("_");
         var metaObj = arr[0];
-        if(arr[1]==="trigger"){
+        if (arr[1] === "trigger") {
             var options = {
                 "method": "GET",
                 "hostname": rip,
                 "port": "7020",
-                "path": "/api/v1.0/"+rtenement+"/"+metaObj+"/meta/trigger",
+                "path": "/api/v1.0/" + rtenement + "/" + metaObj + "/meta/trigger",
                 "headers": {
                     "x-token": rtoken,
                     "cache-control": "no-cache",
@@ -345,12 +343,12 @@ router.get('/detail/:metaName', function (req, res, next) {
             });
 
             req2.end();
-        }else{
+        } else {
             var options = {
                 "method": "GET",
                 "hostname": rip,
                 "port": "7020",
-                "path": "/api/v1.0/"+rtenement+"/"+metaObj+"/meta/validations",
+                "path": "/api/v1.0/" + rtenement + "/" + metaObj + "/meta/validations",
                 "headers": {
                     "x-token": rtoken,
                     "cache-control": "no-cache",
@@ -404,6 +402,71 @@ router.get('/detail/:metaName', function (req, res, next) {
     }
 
 
+    //
+
+});
+
+/**
+ * 获得每个对象的字段详情
+ */
+router.get('/field/:metaName', function (req, res, next) {
+    //获取cookies
+    var rip = req.cookies.ip;
+    var rtoken = req.cookies.xToken;
+    var rtenement = req.cookies.tenement;
+
+    var metaName = req.params.metaName;
+
+    var options = {
+        "method": "GET",
+        "hostname": rip,
+        "port": "7010",
+        "path": "/api/v1.0/meta/" + metaName + "/meta",
+        "headers": {
+            "x-token": rtoken,
+            "cache-control": "no-cache",
+            "postman-token": "1080e5e4-6543-2889-e197-1c2082db39b9"
+        }
+    };
+
+    var req2 = http.request(options, function (res2) {
+        var chunks = [];
+
+        res2.on("data", function (chunk) {
+            chunks.push(chunk);
+        });
+
+        res2.on("end", function () {
+            var body = Buffer.concat(chunks);
+            // [{dis_name:'',name:'',type:''},{}]
+            var jsonObj = JSON.parse(body.toString());
+
+            var dataObj = {};
+            if (jsonObj.code === 0) {
+                var schema = jsonObj.body.schema;
+                dataObj.success = true;
+                var objArray = [];
+                dataObj["objArray"] = objArray;
+                for (v in schema) {
+                    var fieldObj = {};
+                    fieldObj.display_name = schema[v].display_name;
+                    fieldObj.name = schema[v].name;
+                    fieldObj.type = schema[v].type;
+                    objArray.push(fieldObj);
+                }
+            }
+            // else if(jsonObj.code === 107112){
+            //     dataObj.success = "对象不存在";
+            // }
+            else {
+                dataObj.success = false;
+            }
+            res.json(dataObj);
+        });
+
+    });
+
+    req2.end();
     //
 
 });

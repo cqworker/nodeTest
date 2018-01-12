@@ -13,18 +13,56 @@ html
     body
         //图片处理或触发一次访问
         img(src="/images/foo.png")
-        br
-        if body
-            a=  '触发器: '
+        div(style="color: #00B83F ;position: absolute;left: 10px;")
             br
-            textarea#trigger #{body.trigger}
-        else
-            ul
-                li= '该对象无trigger'
-        br
-        button#editTrigger 提交修改
+            if body
+                a=  '触发器: '
+                br
+                textarea#trigger #{body.trigger}
+            else
+                ul
+                    li= '该对象无trigger'
+
+            br
+            button#editTrigger 提交修改
+        #main(style="position: absolute;right: 10px; width: 300px;height:400px;")
+            br
+            | 对象:
+            input#metaName(type="text")
+            a(id="searchField") 查询字段
+            br
+            | 对象字段列表:
+            table(border="1" cellspacing="0" cellpadding="0")
+                thead
+                    tr
+                        th 中文名
+                        th 字段名
+                        th 类型
+                tbody#myTbody
 
         script.
+            $('#searchField').bind('click',function(){
+                var metaName = $('#metaName').val().trim();
+                $.ajax({
+                    url: '/meta/field/'+ metaName,
+                    dataType: 'json',
+                    type: 'get',
+                    success: function (data) {
+                        if(data.success){
+                            var str = "";
+                            for(v in data.objArray){
+                                str += "<tr><td>"+data.objArray[v].display_name+"</td><td>"+data.objArray[v].name+"</td><td>"+data.objArray[v].type+"</td></tr>";
+                            }
+                            $('#myTbody').html(str);
+                        }else{
+                            alert('打盹了没查到')
+                        }
+
+                    }
+                })
+
+            })
+
             $('#editTrigger').bind('click',function(){
                 var trigger = $('#trigger').val();
                 $.ajax({
@@ -41,7 +79,7 @@ html
             });
             $('#deleteTrigger').bind('click', function () {
                 $.ajax({
-                    url: '/trigger/create',
+                    url: '',
                     data: {},
                     dataType: 'json',
                     type: 'post',

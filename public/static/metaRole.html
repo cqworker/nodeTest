@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<HTML>
+<head>
+    <title></title>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../stylesheets/zTreeStyle.css" type="text/css">
+    <script type="text/javascript" src="../javascripts/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="../javascripts/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../javascripts/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../javascripts/jquery.ztree.exedit.min.js"></script>
+    <script type="text/javascript" src="../javascripts/metaRole/metaRole.js">
+
+    </script>
+</head>
+
+<body>
+<script>
+</script>
+
+<ul id="treeDemo" class="ztree"></ul>
+
+
+<div style="position: absolute;left: 200px ;top :10px" id="myDiv0">
+
+    <table style="border: #00B83F">
+        <thead>
+        <tr>
+            <td>标准对象字段</td>
+            <td>
+                <select id="roleName">
+                    <option value="管理员">管理员</option>
+                    <option>业务专员</option>
+                    <option>法务专员</option>
+                    <option>结算专员</option>
+                    <option>财务专员</option>
+                    <option>交收专员</option>
+                    <option>金融专员</option>
+                    <option>分管副总</option>
+                    <option>总经理</option>
+                    <option>其他公司业务员</option>
+                </select>
+            </td>
+            <td>
+                <div id="OLA_TD">
+                能新建<input type="checkbox" id="createObj" checked>
+                可读<input type="checkbox" id="readObj" checked>
+                允许删除<input type="checkbox" id="deleteObj" checked>
+                可以编辑<input type="checkbox" id="updateObj" checked>
+                查看所有字段<input type="checkbox" id="view_allObj" checked>
+                修改所有字段<input type="checkbox" id="modify_allObj" checked>
+                </div>
+            </td>
+            <td>
+                <button id="createRole">生成权限</button>
+            </td>
+            <td>
+                <div id="myName">
+                    tips:(填写该角色用户名称用','隔开)<br/>
+                    角色包含<input type="text" id="roleNames"/>
+                </div>
+
+            </td>
+        </tr>
+        </thead>
+        <form id="myForm">
+            <tbody id="myTbody">
+            <tr><td><input type='text' value=" + data.body.schema[p].display_name + " name=" + p + "></td>
+            <td>增<input type='checkbox' name='creatable' name='dd'/>删<input type='checkbox' name='dd' name='deletable'/>改<input type='checkbox' name='dd' name='readable'/>查<input type='checkbox' name='dd' name='readable'/>全选<input type='checkbox' name='all'/></td></tr>
+            </tbody>
+
+        </form>
+
+
+    </table>
+
+
+</div>
+
+
+
+<div id="myJson"></div>
+
+</body>
+
+<script type="text/javascript">
+
+    $(function () {
+
+
+
+
+    })
+
+</script>
+
+
+</HTML>

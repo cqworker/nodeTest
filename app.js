@@ -47,7 +47,7 @@ var trigger = require('./routes/trigger');
 var validation = require('./routes/validation');
 var approve = require('./routes/approve');
 var ticket = require('./routes/ticket');
-
+var markdownPage = require('./routes/markdownPage');
 
 //app注册
 //在express内部，有一个函数的数组，暂时叫这个数组tasks，每来一个请求express内部会依次执行这个数组中的函数
@@ -122,7 +122,7 @@ app.use('/trigger', trigger);
 app.use('/validation', validation);
 app.use('/approve', approve);
 app.use('/ticket', ticket);
-
+app.use('/markdownPage', markdownPage);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
