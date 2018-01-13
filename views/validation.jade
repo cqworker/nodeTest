@@ -15,8 +15,16 @@ html
         if body
             for val,index in body
                 .myDiv
-                    a= '验证器名称: '
-                    input.VerName(type='text',value= "#{index}")
+                    tr
+                        td
+                            a= '验证器名称: '
+                            input.VerName(type='text',value= "#{index}")
+                        td
+
+                        td
+                            a= '错误提示: '
+                            input.errMsg(type='text',value= "#{val.error_message}" size=50)
+
                     br
                     a= '是否启用:'
                     if val.is_valid
@@ -24,12 +32,9 @@ html
                     else
                         input.valid(type='checkbox')
                     br
-                    a= '错误提示: '
-                    input.errMsg(type='text',value= "#{val.error_message}" size=50)
-                    br
                     br
                     //a= val.description
-                    textarea.validationdd #{val.expression}
+                    textarea.validationdd(rows="6",cols="96") #{val.expression}
                     br
                     button.editBut 修改
                     br

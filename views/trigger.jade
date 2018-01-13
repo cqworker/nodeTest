@@ -53,6 +53,7 @@ html
                             for(v in data.objArray){
                                 str += "<tr><td>"+data.objArray[v].display_name+"</td><td>"+data.objArray[v].name+"</td><td>"+data.objArray[v].type+"</td></tr>";
                             }
+                            $('#myTbody').html("");
                             $('#myTbody').html(str);
                         }else{
                             alert('打盹了没查到')

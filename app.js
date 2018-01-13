@@ -17,7 +17,7 @@ var log4js = require('log4js');
 //console是默认的appender，使用cheese这个appender时会将日志记录文件中，日志文件名为cheese.log
 log4js.configure({
     appenders: {common: {type: 'file', filename: 'logs/common.log'}},
-    categories: {default: {appenders: ['common'], level: 'error'}}
+    categories: {default: {appenders: ['common'], level: 'info'}}
 });
 
 //mysql中间件
@@ -101,12 +101,25 @@ app.use(cookieParser());
 
 
 //设置日志级别
-app.use(log4js.connectLogger(log4js.getLogger('common'), {level: log4js.levels.INFO}));
+// app.use(log4js.connectLogger(log4js.getLogger('common'), {level: log4js.levels.INFO}));
 //添加mysql中间件
 app.use(myConnection(mysql, dbOptions, 'single'));
 //静态文件
 app.use(express.static(path.join(__dirname, 'public')));
 
+//拦截器 需要在其他路由上
+app.use(function (req, res, next) {
+    var url = req.originalUrl;//获取浏览器中当前访问的nodejs路由地址；
+    // var userCookies=req.cookies.userCookies; //获取客户端存取的cookie,userCookies为cookie的名称；//有时拿不到cookie值，可能是因为拦截器位置放错，获取该cookie的方式是依赖于nodejs自带的cookie模块，//因此，获取cookie必须在1,2步之后才能使用，否则拿到的cookie就是undefined.
+    var myLogger = log4js.getLogger('common');
+    myLogger.info("URL: "+url);
+    // console.log("Cookie: "+req.cookies.ip+"是否有效 ："+!(req.cookies.ip==undefined));
+    //判断是增删改操作就写入log中
+    if(url=='/meta'){ //通过判断控制用户登录后不能访问登录页面；
+        return res.redirect('/index');//页面重定向；
+    }
+    next();
+});
 
 //路由
 // 2.url对应模板 类似于servletMapping
@@ -123,6 +136,9 @@ app.use('/validation', validation);
 app.use('/approve', approve);
 app.use('/ticket', ticket);
 app.use('/markdownPage', markdownPage);
+
+
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
