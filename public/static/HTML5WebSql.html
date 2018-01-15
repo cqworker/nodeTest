@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HTML5 websql</title> 
+
+
+    <script type="text/javascript">
+        //        指定名字,版本,描述,大小  不存在则新建
+        var db = openDatabase('mydb', '1.0', 'Test DB', 2 * 1024 * 1024);
+        var msg;
+//        开启事务
+//        db.transaction(function (tx) {
+//            tx.executeSql('CREATE TABLE IF NOT EXISTS LOGS (id unique, log)');
+//            tx.executeSql('INSERT INTO LOGS (id, log) VALUES (5, "日记记录1")');
+//            tx.executeSql('INSERT INTO LOGS (id, log) VALUES (6, "日志记录2")');
+//        });
+//        可以在f12中application中查看
+//        db.transaction(function (tx) {
+//            tx.executeSql('DELETE FROM LOGS WHERE ROWID = ?', [2]);
+//        });
+
+        db.transaction(function (tx) {
+
+            tx.executeSql('SELECT * FROM LOGS', [], function (tx, results) {
+                var len = results.rows.length, i;
+                //获得记录数
+                msg = "<p>查询记录条数: " + len + "</p>";
+                document.querySelector('#status').innerHTML += msg;
+
+                for (i = 0; i < len; i++) {
+                    //获得记录值
+                    msg = "<p><b>" + results.rows.item(i).log + "</b></p>";
+                    document.querySelector('#status').innerHTML += msg;
+                }
+            }, null);
+        });
+
+    </script>
+
+</head>
+
+<body>
+<div id="status" name="status">状态信息</div>
+</body>
+
+</html>

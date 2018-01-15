@@ -1,15 +1,14 @@
 var express = require('express');
 var logger = require('log4js');
+var passport = require('passport');
 
 var router = express.Router();
 
 
 
 
-router.post('/b',function(req, res,next) {
-
-
-
+router.get('/',function(req, res,next) {
+    res.render('login', {});
 });
 
 /**
@@ -26,7 +25,7 @@ router.post('/a', function (req, res, next) {
             return next(err);
         } else {
 //nodejs sql防止注入  http://www.dengzhr.com/node-js/877
-            conn.query('SELECT name FROM user WHERE name = ? AND password = ?', [name,pwd], function (err, result) {
+            conn.query('SELECT name,password FROM user WHERE name = ? AND password = ?', [name,pwd], function (err, result) {
                 if (err) {
                     return next(err);
                 } else {
@@ -35,15 +34,32 @@ router.post('/a', function (req, res, next) {
                     //jso [ { name: 'admin',password:'admin'} ]
                     //响应ajax
                     if (jso[0]) {
-                        res.json({success: true});
+                        // console.log(jso[0].password);
+                        res.setHeader("Set-Cookie", ["_auth=" + jso[0].password]);
+                        res.redirect('/tenement');
+                        // res.render('tenement',{success: true});
                     } else {
-                        var log1 = logger.getLogger('common');
-                        log1.error("first common log!");
                         res.json({success: false});
                     }
                 }
             });
         }
+    });
+});
+
+
+
+router.get('/myLogin',function (req, res, next) {
+    var user={
+        name:"Chen-xy",
+        age:"22",
+        address:"bj"
+    };
+    req.session.user=user;
+    console.log(req.session.user);
+    res.render('index', {
+        title: 'the test for nodejs session' ,
+        name:'sessiontest'
     });
 });
 module.exports = router;

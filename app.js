@@ -48,6 +48,7 @@ var validation = require('./routes/validation');
 var approve = require('./routes/approve');
 var ticket = require('./routes/ticket');
 var markdownPage = require('./routes/markdownPage');
+var layout = require('./routes/layout');
 
 //app注册
 //在express内部，有一个函数的数组，暂时叫这个数组tasks，每来一个请求express内部会依次执行这个数组中的函数
@@ -67,37 +68,37 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
 //权限--启用session
-// app.use(express.session({secret: 'myCq', cookie: {maxAge: 60000}}));//60秒
+app.use(session({secret: 'myCq', resave: true,saveUninitialized:true,cookie: {maxAge: 60000}}));//60秒
 // app.use(passport.initialize());
 // app.use(passport.session());
 // app.use(flash());
 
 //权限中间件 --本地验证策略passport-local
-// passport.use(new LocalStrategy(
+// passport.use('local',new LocalStrategy(
 //     {
 //         usernameField: 'name',
 //         passwordField: 'pwd'
 //     },
 //     function (username, password, done) {
 //         //调用方法查询用户
-//             if (!User.name) {
-//                 return done(null, false, {message: '用户不存在'});
-//             }
-//             if (!User.pwd) {
-//                 return done(null, false, {message: '密码错误'});
-//             }
-//             return done(null, user);
+//         if (!User.name) {
+//             return done(null, false, {message: '用户不存在'});
+//         }
+//         if (!User.pwd) {
+//             return done(null, false, {message: '密码错误'});
+//         }
+//         return done(null, user);
 //     }
 // ));
-// //保存user对象
-// passport.serializeUser(function (user, done) {
-//     done(null, user);
-// });
-// //删除user对象
-// passport.deserializeUser(function (user, done) {
-//     done(null, user);
-// });
-//
+//保存user对象
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+//删除user对象
+passport.deserializeUser(function (user, done) {
+    done(null, user);
+});
+
 
 
 //设置日志级别
@@ -110,13 +111,24 @@ app.use(express.static(path.join(__dirname, 'public')));
 //拦截器 需要在其他路由上
 app.use(function (req, res, next) {
     var url = req.originalUrl;//获取浏览器中当前访问的nodejs路由地址；
-    // var userCookies=req.cookies.userCookies; //获取客户端存取的cookie,userCookies为cookie的名称；//有时拿不到cookie值，可能是因为拦截器位置放错，获取该cookie的方式是依赖于nodejs自带的cookie模块，//因此，获取cookie必须在1,2步之后才能使用，否则拿到的cookie就是undefined.
+    var _auth = req.cookies._auth;
+    console.log(_auth);
+    //获取客户端存取的cookie,userCookies为cookie的名称；
+    // 有时拿不到cookie值，可能是因为拦截器位置放错，
+    // 获取该cookie的方式是依赖于nodejs自带的cookie模块，
+    // 因此，获取cookie必须在1,2步之后才能使用，否则拿到的cookie就是undefined.
     var myLogger = log4js.getLogger('common');
-    myLogger.info("URL: "+url);
+    myLogger.info("URL: " + url);
     // console.log("Cookie: "+req.cookies.ip+"是否有效 ："+!(req.cookies.ip==undefined));
     //判断是增删改操作就写入log中
-    if(url=='/meta'){ //通过判断控制用户登录后不能访问登录页面；
-        return res.redirect('/index');//页面重定向；
+    var authUrl = url.split('/');
+    console.log(authUrl[1]);
+    //请求需要手动添加cookies所以用cookies来验证登录时麻烦的
+    //session
+    if (authUrl[1] != 'login') {
+        if (_auth != '') { //通过判断控制用户登录后不能访问登录页面；
+            return res.redirect('/login');//页面重定向；
+        }
     }
     next();
 });
@@ -136,7 +148,7 @@ app.use('/validation', validation);
 app.use('/approve', approve);
 app.use('/ticket', ticket);
 app.use('/markdownPage', markdownPage);
-
+app.use('/layout', layout);
 
 
 // catch 404 and forward to error handler

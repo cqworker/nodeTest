@@ -11,13 +11,22 @@ html
             include  ../public/javascripts/jquery-3.2.1.min.js
     body
         include ../public/static/meta.txt
+
+
         :markdown-it
-            ### 本页面支持markdown
+            ### 操作日志
+
+        include ../logs/common.log
 //
   注释
   多行注释
 
+br
+a='----------------------------------------------'
+br
+br
 a(href="/markDownPage/show", target="_blank")  meta 操作手册
+
 
 
 h2      #{body.display_name} 字段集!
