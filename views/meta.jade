@@ -10,17 +10,20 @@ html
             include ../public/javascripts/index.js
     body
         h2 标准对象集
+        button
+            a(href='/static/metaCard.html') 对象字段统计
         ul
         each val, index in body
-            li=  '字段名: ' + val.display_name
-            li=  '数据库存储字段名: ' + index
-            a(href='/see/' + index) SeeDetail--|
+            li=  '自定义对象: '
+                a(href='/see/' + index) #{val.display_name}
+            li=  '数据库表名: ' + index
 
-            a(href='/trigger/' + index) --SeeTrigger--|
-            a--
-            a(href='/validation/' + index) --SeeValidation
-            a--
-            a(href='/layout/' + index) --SeeLayout
+            button
+                a(href='/trigger/' + index) 触发器
+            button
+                a(href='/validation/' + index) 验证器
+            button
+                a(href='/layout/' + index) 布局
             li
                 a(style='color:black') ----------------------------------------------------
             br

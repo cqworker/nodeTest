@@ -48,7 +48,7 @@ var validation = require('./routes/validation');
 var approve = require('./routes/approve');
 var ticket = require('./routes/ticket');
 var markdownPage = require('./routes/markdownPage');
-var layout = require('./routes/layout');
+var myLayout = require('./routes/myLayout');
 
 //app注册
 //在express内部，有一个函数的数组，暂时叫这个数组tasks，每来一个请求express内部会依次执行这个数组中的函数
@@ -91,13 +91,13 @@ app.use(session({secret: 'myCq', resave: true,saveUninitialized:true,cookie: {ma
 //     }
 // ));
 //保存user对象
-passport.serializeUser(function (user, done) {
-    done(null, user);
-});
-//删除user对象
-passport.deserializeUser(function (user, done) {
-    done(null, user);
-});
+// passport.serializeUser(function (user, done) {
+//     done(null, user);
+// });
+// //删除user对象
+// passport.deserializeUser(function (user, done) {
+//     done(null, user);
+// });
 
 
 
@@ -111,22 +111,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 //拦截器 需要在其他路由上
 app.use(function (req, res, next) {
     var url = req.originalUrl;//获取浏览器中当前访问的nodejs路由地址；
-    var _auth = req.cookies._auth;
-    console.log(_auth);
-    //获取客户端存取的cookie,userCookies为cookie的名称；
-    // 有时拿不到cookie值，可能是因为拦截器位置放错，
-    // 获取该cookie的方式是依赖于nodejs自带的cookie模块，
-    // 因此，获取cookie必须在1,2步之后才能使用，否则拿到的cookie就是undefined.
+    console.log(url);
+    var myAuth = req.cookies.myAuth;
+
     var myLogger = log4js.getLogger('common');
     myLogger.info("URL: " + url);
-    // console.log("Cookie: "+req.cookies.ip+"是否有效 ："+!(req.cookies.ip==undefined));
-    //判断是增删改操作就写入log中
+    //TODO 判断是增删改操作就写入log中
     var authUrl = url.split('/');
-    console.log(authUrl[1]);
-    //请求需要手动添加cookies所以用cookies来验证登录时麻烦的
-    //session
-    if (authUrl[1] != 'login') {
-        if (_auth != '') { //通过判断控制用户登录后不能访问登录页面；
+
+    if (authUrl[1] !== 'login') {//访问除登录页外其他页面
+        if (myAuth === '') {//判断是否已登录
             return res.redirect('/login');//页面重定向；
         }
     }
@@ -148,7 +142,7 @@ app.use('/validation', validation);
 app.use('/approve', approve);
 app.use('/ticket', ticket);
 app.use('/markdownPage', markdownPage);
-app.use('/layout', layout);
+app.use('/layout', myLayout);
 
 
 // catch 404 and forward to error handler

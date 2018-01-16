@@ -34,10 +34,9 @@ router.post('/a', function (req, res, next) {
                     //jso [ { name: 'admin',password:'admin'} ]
                     //响应ajax
                     if (jso[0]) {
-                        // console.log(jso[0].password);
-                        res.setHeader("Set-Cookie", ["_auth=" + jso[0].password]);
+                        //添加cookies
+                        res.cookie("myAuth", jso[0].password, {maxAge: 1000*60*60*24,httpOnly: true});
                         res.redirect('/tenement');
-                        // res.render('tenement',{success: true});
                     } else {
                         res.json({success: false});
                     }
@@ -47,20 +46,5 @@ router.post('/a', function (req, res, next) {
     });
 });
 
-
-
-router.get('/myLogin',function (req, res, next) {
-    var user={
-        name:"Chen-xy",
-        age:"22",
-        address:"bj"
-    };
-    req.session.user=user;
-    console.log(req.session.user);
-    res.render('index', {
-        title: 'the test for nodejs session' ,
-        name:'sessiontest'
-    });
-});
 module.exports = router;
 

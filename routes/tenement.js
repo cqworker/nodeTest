@@ -21,7 +21,7 @@ router.post('/', function (req, res, next) {
           base64Tenement = rtenement
     }
 
-    // 设置cookies
+    // 设置cookies 会把已存在的cookies覆盖
     res.setHeader("Set-Cookie", ["xToken=" + rtoken , "ip=" + rip , "tenement=" + base64Tenement ]);
 
     // 重定向 加工数据然后路由显示

@@ -1,0 +1,97 @@
+//jade
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title layout
+    include ../public/static/head.jade
+    style
+      include ../public/stylesheets/style.css
+    script
+      include ../public/javascripts/index.js
+  body
+    h2 布局管理
+
+      div
+        ul
+          li
+            button(name="list") "列表页管理"
+            br
+          li
+            button(name="detail") "详情页管理"
+            br
+          li
+            button(name="ios") "IOS界面管理"
+            br
+          li
+            button(name="android") "安卓管理"
+            br
+          li
+            button(name="global") "全局管理"
+            br
+          li
+            input(type='button',id="edit" value="修改")
+            br
+      #pwd(style="display:none")
+        fieldset
+            legend 请填写账号密码完成修改
+            input(type='text' id='userid' name='name' value='admin')
+            br
+            input(type='password' id='pwdd' name='pwd' value='1234567')
+            button(id='sureBut') 确认修改
+      div(style="position: absolute;right: 400px;top:90px; width: 300px;height:400px;")
+          a(id="kind")
+          a= '布局: '
+          br
+          textarea#myLayout(rows="32",cols="96")
+
+
+
+
+
+    script.
+      $('button').bind('click',function () {
+          var kind = $(this).attr("name");
+          $.ajax({
+              url:'/layout/b/'+kind,
+              type:'get',
+              dataType:'json',
+              success:function(data){
+                  $('#kind').html(kind);
+                  $('#myLayout').html("");
+                  $('#myLayout').html(JSON.stringify(data,null," "));
+              }
+          })
+      })
+
+
+      $('#sureBut').bind('click',function(){
+          var kind = $('#kind').html();
+          if(kind.trim() ===''){
+              alert('请选择需要修改的布局')
+          }
+          var jsonDate = $('#myLayout').val();
+          var pwd = $('#pwdd').val();
+          var userid = $('#userid').val();
+          $.ajax({
+              //'/layout/edit/' + kind
+              url: '',
+              type: 'post',
+              data: {
+                  userid: userid,
+                  pwd: pwd,
+                  json: jsonDate
+              },
+              dataType: 'json',
+              success: function (data) {
+                  $('#pwd').hide();
+                  alert(data.message);
+              }
+          })
+      })
+
+      $('#edit').bind("click",function () {
+          $('#pwd').show();
+      })
+
+

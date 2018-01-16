@@ -12,11 +12,6 @@ html
     body
         include ../public/static/meta.txt
 
-
-        :markdown-it
-            ### 操作日志
-
-        include ../logs/common.log
 //
   注释
   多行注释
@@ -25,8 +20,12 @@ br
 a='----------------------------------------------'
 br
 br
-a(href="/markDownPage/show", target="_blank")  meta 操作手册
-
+a(style="font-size:16px;color:black") [1]
+a(href="/markDownPage/show", target="_blank")     meta 操作手册
+br
+a(style="font-size:16px;color:black") [2]
+a(href='https://wiki.meiqia.com/pages/viewpage.action?pageId=2885496' target="_blank") 字段类型介绍
+br
 
 
 h2      #{body.display_name} 字段集!
@@ -55,27 +54,38 @@ each val, index in body.schema
         li= '默认值: '
             a #{val.default_value.value}
     br
-    a(href='/schema/edit/' + index )
-        = '   Edit   -|'
-    a(href='/schema/delete/' + index )
-        = '-  Delete   '
+    button
+        a(href='/schema/edit/' + index )
+            = '   Edit  '
+    button
+        a(href='/schema/delete/' + index )
+            = '  Delete   '
     br
     a(style='color:black') ------------------------------------------
-if body.dependency_by.reverse_lookup
+
+div(style="position: absolute;right: 366px;top:200px; width: 300px;height:400px;")
+    if body.dependency_by.reverse_lookup
     h2 表的关联关系
+    a(style='color:red') ------------------------------------------
     ul
     each val, index in body.dependency_by.reverse_lookup
         li= '关联表:'
-            a= index
+            a(href='/see/' + index) #{index}
         li= '关联字段: '
             a= val.column_names
         //a(href='/edit/' + index ) Edit
         a(style='color:red') ------------------------------------------
         br
+div(style="position: absolute;right: 66px;top:200px; width: 300px;height:400px;")
+    h2 对象权限
+    li creatable<escaped> #{body.creatable}
+    li readable<escaped> #{body.readable}
+    li updatable<escaped> #{body.updatable}
+    li deletable<escaped> #{body.deletable}
 
-h2 对象权限
-li creatable<escaped> #{body.creatable}
-li readable<escaped> #{body.readable}
-li updatable<escaped> #{body.updatable}
-li deletable<escaped> #{body.deletable}
+div(style="position: absolute;right: 366px;top:400px; width: 300px;height:400px;")
+    :markdown-it
+        ### 操作日志
+
+    include ../logs/common.log
 
